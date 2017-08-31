@@ -1,0 +1,34 @@
+---
+title: "04-Supervised Classification"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+# Supervised Classification:
+
+Supervised classifcation is possible with help of training data fed to the Learning Machine.  This can be achieved in two ways:  
+
+Availability of data where the identity of the records in the given domain are already labelled  
+Employ unsupervised training on a subset of the data which can further be employed to predict the larger dataset  
+
+###Preparing a Minimal training set using clerical means
+
+In the following example, 216 pairs of records are labelled through manual inspection which is further utilized to classify the entire dataset.  
+
+```{r}
+#minTrain <- getMinimalTrain(rpairs)
+
+#minTrain <- editMatch(minTrain)
+#minTrain <- load(file="minTrain")
+
+#save(minTrain,file="minTrain")
+
+#model <-trainSupv(minTrain, method="bagging")
+#save(model,file="model")
+#model <- load(file="model")
+
+#result <- classifySupv(model, newdata=rpairs)
+#summary(result)
+```
