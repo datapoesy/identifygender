@@ -8,13 +8,26 @@ output:
 
 # Deduplication Process:
 
-##Build Comparison Patterns
+The dedeuplication process elaborated herein involves the following steps:
 
-The component patterns are built as component paris.  The row numbers of the underllying records are followed by their comparison vector.  The column is_match shows the matching status of a pair: '0' stands for non-match, 1 means, match.  
+*  Comparing variables across multiple records and identifying similar ones  
+*  Identify potential pairs of records that are similar  
+*  Assign weights to each pair based on weights  
+*  Identify a lower and higher threshold across which the records will be considered unique or identical pairs.  The middle region will be potential ones that needs to be further classified  
 
-While doing comparison, in this case, the First Name and Last Name values are checked for their phonetic equivalents; thereby overcoming spelling anomalies to a good extent.  
+*  Classification can be achieved manually  
+*  Classification can be done using a classifier that can be tuned using a training set created clerically  
+*  As an alternative to the above, the classifier can be created using Machine Learning algorithms  
 
-Additionally, columns "record.id" and "birth.date" are excluded from comparison since these are control data: used only for reference purpose.  
+The figure illustrates the process:
+
+ <center>![Deduplication Process](classification-process.png)</center>
+
+
+##Summary of Results:
+
+Number of duplicate records :  `r nrow(changes.ds)`  
+
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 rpairs <- compare.dedup(new.base.ds, blockfld=list(4),
@@ -24,58 +37,29 @@ rpairs <- compare.dedup(new.base.ds, blockfld=list(4),
 
 ```
 
-
-##Probabilistic record Linkage
-
-The probabilities of record linkage is estimated using an EM alogorithm, Contiero et.al (2005), and recorded as weights.  The records are distributed across regions bounded by two weights:  a lower cut-off below which there is no linkage possible, an upper cut-off showing an absolute possibility and a region in between, that depicts a potentiality for linkage.  
-
 The weight distribution with number of records under the range is shown in the table below:
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 rpairs <- epiWeights(rpairs)
-summary(rpairs)
-```
-
-
-##Get Pairs
-
-It is possible to get the pairs within the probable region by specifying a threshold region.  In the current instance, the following threshold is chosen:  
-Upper :  0.70  
-Lower :  0.25  
-
-There are 771 rows retrieved from this range of threshold values:  
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-result.pairs <- getPairs(rpairs,0.70, 0.25)
-panderOptions('table.alignment.default','left')
-pander(head(result.pairs), caption="Few rows of paried results", short= TRUE, split.tables=100)
+suppressPackageStartupMessages(library(pander))
+panderOptions("table.split.table", Inf)  ## don't split tables
+pander(summary(rpairs)[1:2])
 
 ```
 
-##Classification using Machine Learning
-
-Having compared records and identified the weighted pairs, they further need to be classified to matching, non-matching and pontentially matching ones.  The weighted pairs needs further classification which can be accomplished using different means.  The next step explores the possiblility of classification using Machine Learning techniques:  
 
 
 ##Classification of Records based on Unsupervised Classification:
 
 The following is the output of an unsupervised classification done using "kmeans" classification algorithm:  
 
-The threshold values are computed using the "kmeans" algorithm.  
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 classified.ds <- classifyUnsup(rpairs, method="kmeans")
 summary(classified.ds)
 ```
 
-
-The classification results states:  
-Non linked pairs =  5660  
-Probable region  =  None  
-Linked pairs     =  291  
-
-In our controlled experiment, the number of additional records included were 284, and the value of 291 shows Unsupervised classification has been optimistic in linking records.  284 Vs. 291 shows a higher matching than actually observed.  
-
+The difference between the duplicates we created and the identified linkages denotes the error from the deduplication process.
 
 
 ###Manual  Classification
@@ -83,13 +67,13 @@ In our controlled experiment, the number of additional records included were 284
 It is possible to classify the records using thresholds identified manually.  In the controlled experiment, the following thresholds give exactly the same value as unsupervised classification:  
 
 Higher value = 0.85 (Anything beyond this does not impact the classification output)   
-Lower value  = 0.32 (This value determines whether the classification is optimistic or pessimistic)   
+Lower value  = 0.40 (This value determines whether the classification is optimistic or pessimistic)   
 
 The output of the above threshold values is given below:  
 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-result <- epiClassify(rpairs, 0.85,0.32)
+result <- epiClassify(rpairs, 0.85,0.40)
 summary(result)
 ```
 
@@ -97,22 +81,20 @@ summary(result)
 ###Pessimistic Thresholds
 It is advised to adopt a pessimistic approach while identifying threshold values since probable ones could be verified clerically to avoid false positives:  
 
+We get a pessimistic value from the manual process.  This avoids the problem of false positives.  The manually selected threshold is further validated on a larger population of the dataset with:  
 
-The classification outcome of pessimistic threshold values are shown in the summary followed:
-
-Higher value = 0.85 (Anything beyond this does not impact the classification output)   
-Lower value  = 0.33 (This value determines whether the classification is optimistic or pessimistic)   
-
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-result <- epiClassify(rpairs, 0.85,0.33)
-summary(result)
-```
-
-Note that the value of 278 is closer to our actual value of 284 whereas it theoretically avoids the potential for false positives.  
+*  More number of records
+*  Varied data quality range
 
 
-##Next Steps at validation:
+##Notes:
 
-The unsupervised classification results and the output from the manual threshold limits can be compared against a larger dataset to observe the accuracy range.  
+###Build Comparison Patterns
+
+The component patterns are built as component pairs.  The row numbers of the underlying records are followed by their comparison vector.  The column is_match shows the matching status of a pair: '0' stands for non-match, 1 means, match.  
+
+While doing comparison, certain fields are such as, the First Name and Last Name values are checked for their phonetic equivalents; thereby overcoming spelling anomalies.  
+
+Additionally, columns "record.id" and "birth.date" are excluded from comparison since these are control data: used only for reference purpose.  The date of birth is broken up into date, month and year and further compared.
+
 

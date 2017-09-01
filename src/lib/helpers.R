@@ -365,7 +365,7 @@ updateAddress = function(df, p){
     firstRow$county <- as.character(temp[1,c("county")])
     firstRow$forename <- df$forename[sample(nrow(df),1)] # Take a random name from the forename column
     firstRow$Surname <- df$surname[sample(nrow(df),1)] # Take a random name from the forename column
-    firstRow$cust.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
     firstRow$gender <- if(firstRow$gender=="male") "female" else "male"
     firstRow$record.id <- paste(temp$record.id[i],"Ad")
     result[i,]<- firstRow
@@ -386,7 +386,7 @@ updateTwins = function(df, p){
   for(i in 1:nrow(temp)){
     firstRow =  temp[i,]
     firstRow$forename <- df$forename[sample(nrow(df),1)] # Take a random name from the forename column
-    firstRow$cust.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
     firstRow$record.id <- paste(temp$record.id[i],"T")
     result[i,]<- firstRow
   }
@@ -406,7 +406,7 @@ updateCouples = function(df, p){
   for(i in 1:nrow(temp)){
     firstRow =  temp[i,]
     firstRow$forename <- df$forename[sample(nrow(df),1)] # Take a random name from the forename column
-    firstRow$cust.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
     firstRow$gender <- if(firstRow$gender=="male") "female" else "male"
     firstRow$b.month <- df$b.month[sample(nrow(df),1)] # Take a random month of birth
     firstRow$b.day <- df$b.day[sample(nrow(df),1)] # Take a random month of birth
@@ -423,19 +423,19 @@ updateCouples = function(df, p){
 #input name to be changed
 #input suggested format
 
-alterFirstName = function(df,old, new){
+alterFirstName = function(df,old,new,p){
   
   temp <- df[like(df$forename,old),]
-  #temp <- df[grep(df$forename, old), ]
-  temp <- (temp[(nrow(temp)/2),]) # Percentage of rows
+  
+  temp <- temp[c(1:(nrow(temp)*p/100)),] # Percentage of rows
   result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
   colnames(result) <- colnames(df)
   
   for(i in 1:nrow(temp)){
     firstRow =  temp[i,]
-    firstRow$cust.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(temp$record.id[i],"NFN")
-    firstRow$forename <- gsub(old, new, firstRow$forename)
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$record.id <- paste(temp$record.id[i],"AFN")
+    firstRow$forename <- gsub(old, new, firstRow$surname)
     result[i,]<- firstRow
   }
   result
@@ -446,18 +446,18 @@ alterFirstName = function(df,old, new){
 #input name to be changed
 #input suggested format
 
-alterLastName = function(df,old, new){
+alterLastName = function(df,old, new,p){
   
   temp <- df[like(df$surname,old),]
   #temp <- df[grep(df$surname, old), ]
-  temp <- (temp[(nrow(temp)/2),]) # Percentage of rows
+  temp <- temp[c(1:(nrow(temp)*p/100)),] # Percentage of rows
   result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
   colnames(result) <- colnames(df)
   
   for(i in 1:nrow(temp)){
     firstRow =  temp[i,]
-    firstRow$cust.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(temp$record.id[i],"NFN")
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$record.id <- paste(temp$record.id[i],"ALN")
     firstRow$surname <- gsub(old, new, firstRow$surname)
     result[i,]<- firstRow
   }
@@ -469,18 +469,18 @@ alterLastName = function(df,old, new){
 #input name to be changed
 #input suggested format
 
-alterAddr1 = function(df,old, new){
+alterAddr1 = function(df,old,new,p){
   
   temp <- df[like(df$addr.1,old),]
  
-  temp <- (temp[(nrow(temp)/2),]) # Percentage of rows
+  temp <- temp[c(1:(nrow(temp)*p/100)),] # Percentage of rows
   result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
   colnames(result) <- colnames(df)
   
   for(i in 1:nrow(temp)){
     firstRow =  temp[i,]
-    firstRow$cust.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(temp$record.id[i],"NFN")
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$record.id <- paste(temp$record.id[i],"AADD1")
     firstRow$addr.1 <- gsub(old, new, firstRow$addr.1)
     result[i,]<- firstRow
   }
@@ -488,3 +488,24 @@ alterAddr1 = function(df,old, new){
 }
 
 
+#Function to alter addr.2 field
+#input name to be changed
+#input suggested format
+
+alterAddr2 = function(df,old,new,p){
+  
+  temp <- df[like(df$addr.2,old),]
+  
+  temp <- temp[c(1:(nrow(temp)*p/100)),] # Percentage of rows
+  result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
+  colnames(result) <- colnames(df)
+  
+  for(i in 1:nrow(temp)){
+    firstRow =  temp[i,]
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$record.id <- paste(temp$record.id[i],"AADD2")
+    firstRow$addr.2 <- gsub(old, new, firstRow$addr.2)
+    result[i,]<- firstRow
+  }
+  result
+}

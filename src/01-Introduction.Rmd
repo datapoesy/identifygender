@@ -12,33 +12,33 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 # Introduction {#introduction}
 
-Within the lifespan of any organization, multiple systems get harnessed into the IT estate.  Each of these systems tend to keep a version of the organizational data giving rise concerns about the authenticity of data.  For any information, there should only be a single version of truth and multiple versions question this aspect.  In this analysis while we look at customer records from a linkage context, the concept and solution is applicable to a wide scenario and range of problems.  
+Within the lifespan of any organization, multiple systems get harnessed into the IT estate.  Each of these systems tend to keep a version of the organizational data giving rise to concerns about the authenticity of data.  For any information, there should only be a single version of truth; however this contradicts with the organic, haphzard manner in which organizations grow.  
 
-There are various means by which customer records get corrupted.  
-*Item 1  Synonym errors due to homonyms.  A customer name might get recorded differently when a service agent processes the registration.  For instance Jon and John are phonemically more or less similar.  
+In this analysis while we look at customer records from a linkage context, the concept and solution is applicable to a wide scenario and range of problems.  
+
+##Objective
+
+The objective of this controlled experiment is to:  
+
+1.  Set up a reproducible controlled experiment
+2.  Test alternate deduplication solutions employing clerical, Machine Learning or Hybrid approaches  
+3.  Validate the output by comparing the input to the output  
+4.  Report the accuracy of the solution in quantitative terms  
+
+##Experiment Framework:
+
+The experiment framework is illustrated in the image that follows:  
+
+ <center>![Experiment Framework](experiment-framework.png)</center>
 
 
-Both these methods need to identify pairs of data from data items.  The data items could be multiple sources or evena single source.  The records are transformed into comparable patterns based on different attributes of the data.  For instance,  a customer record is represented by First Name, Last Name, Date of Birth, Address, National Insurance Number, etc.  
-
-Research has classified Record Linkage solutions under two broad heads:
-
-##Probabilistic Methods:  
-They assume that the relationship between the different attributes that form a customer record follows a probability distribution.  
-
-##Machine learning Approaches.  
-ML approaches takes a classification approach to identify linked records.
-
-
-
-##Objective:
-
-The objective is the identify a solution to link identical customer records.
 
 ##Limitations:
 
-The solution presented herein is more conceptual than tangible.  While the solution is defined, interpreted and solved in R, how this could be translated to an implementable solution within the IT landscape of any customer organization is beyond the scope of this book.  
+The solution presented herein is based on simulated data.  The efficiency of the solution from its applicability depends on the extent to which the dataset can be made to reflect the poor quality of the input data.  
 
-The current analysis is accomplished using simulated data.  Details of how the data is generated and the different scenarios it covers is detailed out in a separate chapter dedicated to the
+While the solution is defined, interpreted and solved in R, how this could be translated to an implementable solution within the IT landscape of any customer organization is beyond the scope of this exercise.    
+
 
 ##Acknowledgements:
 The study has been done using the open source statistical tool R [@R-base], R Studio, Forecast [@Fcast2017],[@Fcast2016], and other packages.  

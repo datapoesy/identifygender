@@ -19,7 +19,7 @@ col.filter <- c("userdetail_id","customer_id","forename","surname",
 base.ds <- cust.rcds[col.filter]
 
 #Renaming columns in the dataset
-col.names <-  c("record.id","cust.id","forename","surname",
+col.names <-  c("record.id","some.id","forename","surname",
                   "gender","birth.date","email","m.nmbr",
                   "h.nmbr","addr.1","addr.2","cityname","postcode",
                   "county","nis")
@@ -35,7 +35,7 @@ desc.base.ds <- as.data.frame(t(base.ds[1,]))
 desc.base.ds$variables <- rownames(desc.base.ds)
 rownames(desc.base.ds) <- NULL
 colnames(desc.base.ds)<- c("Description","Variable")
-desc.base.ds$Description <- c("Record ID","Customer ID","First Name","Last Name","Gender",
+desc.base.ds$Description <- c("Unique ID in the dataset","Some Org ID","First Name","Last Name","Gender",
                               "Date of Birth","e-mail ID","Mobile Number",
                               "Home Number","Home Nummber","Street Address",
                               "Name of the City","Post Code","Country","National Insurance Number")
@@ -50,8 +50,8 @@ base.ds$b.day <- format(base.ds$birth.date, format='%d')
 #base.ds <- base.ds[,-6]
 
 
-#Convert cont.id and cust.id to characters as required for string comparison
-base.ds$cust.id <- as.character(base.ds$cust.id)
+#Convert cont.id and some.id to characters as required for string comparison
+base.ds$some.id <- as.character(base.ds$some.id)
 base.ds$m.nmbr <- as.character(base.ds$m.nmbr)
 base.ds$h.nmbr <- as.character(base.ds$h.nmbr)
 base.ds$birth.date <- as.character(base.ds$birth.date)
