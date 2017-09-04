@@ -39,13 +39,13 @@ pander(desc.base.ds, caption="Description of Dataset", short= TRUE, split.tables
 
 ```
 
-The original dataset is unique across all fields.  Each of the records is furnished with an identity key so that it can be tracked at all times.s.  
+The original dataset is unique across all fields.  Each of the records is furnished with an identity key so that it can be tracked from the input to the output. 
 
-##Simulation of real world data issues:
+##Simulation of real world data quality:
 
-The data is simulated to reflect real-life anomalies regards to data.  A controlled (monitored) simulation of anomalies will help evaluate the capability of the solution to manage deduplication of records.  
+The data is simulated to reflect real-life quality issues.  This is done programmatically so that its extent can be controlled and also repeated across multiple datasets for analysis.  
 
-Subsequently, once the solution is established, the same solution could be applied to a larger record base do assess the extensibility of the solution.  
+Once established, the solution could be applied across larger datasets to assess its extensibility and accuracy.  
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 pre.process <-as.data.frame(matrix(ncol = 3, nrow = 0))
@@ -56,8 +56,9 @@ colnames(pre.process) <- c("Sl.No.","Change","Description")
 
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
-p <- 3 # Change this percentage to modify higher percentages:
-new.base.ds <- base.ds
+
+set.seed(1234)
+new.base.ds <-  base.ds[sample(nrow(base.ds),2000),]
 
 changes.ds <-  data.frame(matrix(0, ncol = ncol(base.ds), nrow = 0))
 colnames(changes.ds) <- colnames(base.ds)
@@ -68,17 +69,18 @@ changes.ds$birth.date <- as.character(changes.ds$birth.date)
 changes.ds$postcode <- as.character(changes.ds$postcode)
 # panderOptions('table.alignment.default','left')
 # pander(temp.ds, caption="Description of Dataset", short= TRUE, split.tables=150)
+
+p <- 2.5 # Change this percentage to modify higher percentages:
 ```
 
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Missing e-mail ID
 remove(temp.ds)
-p <- 20
 ## Provide number of the column whose value needs to be changed
 #new.base.ds <- removeColumnValue(new.base.ds,7,20)
 new.base.ds$email[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[1,c(2:3)] <- c("Missing email ids", paste(p, "% of records updated to remove email ids"))
+pre.process[1,c(2:3)] <- c("Missing email ids", paste(p,"% of records updated to remove email ids"))
 
 
 ```
@@ -87,9 +89,9 @@ pre.process[1,c(2:3)] <- c("Missing email ids", paste(p, "% of records updated t
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Missing Home phone numbers
 remove(temp.ds)
-p <- 40
+
 new.base.ds$h.nmbr[sample(nrow(new.base.ds), nrow(new.base.ds)*40/100)] <- ''
-pre.process[2,c(2:3)] <- c("Missing hone phone numbers", paste(p, "% of records updated to remove home phone numbers"))
+pre.process[2,c(2:3)] <- c("Missing home phone numbers", paste(p,"% of records updated to remove home phone numbers"))
 
 ```
 
@@ -97,9 +99,9 @@ pre.process[2,c(2:3)] <- c("Missing hone phone numbers", paste(p, "% of records 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Missing Mobile phone numbers
 remove(temp.ds)
-p <- 20
+
 new.base.ds$m.nmbr[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[3,c(2:3)] <- c("Missing mobile phone numbers", paste(p, "% of records updated to remove mobile phone numbers"))
+pre.process[3,c(2:3)] <- c("Missing mobile phone numbers", paste(p,"% of records updated to remove mobile phone numbers"))
 
 ```
 
@@ -107,9 +109,9 @@ pre.process[3,c(2:3)] <- c("Missing mobile phone numbers", paste(p, "% of record
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Missing Postcode from Address
 remove(temp.ds)
-p <- 25
+
 new.base.ds$postcode[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[4,c(2:3)] <- c("Missing postcodes from address", paste(p, "% of records updated to remove postcode"))
+pre.process[4,c(2:3)] <- c("Missing postcodes from address", paste(p,"% of records updated to remove postcode"))
 
 ```
 
@@ -117,9 +119,9 @@ pre.process[4,c(2:3)] <- c("Missing postcodes from address", paste(p, "% of reco
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Missing Address 1 from Address
 remove(temp.ds)
-p <- 15
+
 new.base.ds$addr.1[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[5,c(2:3)] <- c("Missing address 1", paste(p, "% of records updated to remove address 1"))
+pre.process[5,c(2:3)] <- c("Missing address 1", paste(p,"% of records updated to remove address 1"))
 
 ```
 
@@ -127,9 +129,9 @@ pre.process[5,c(2:3)] <- c("Missing address 1", paste(p, "% of records updated t
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Missing Address 2 from Address
 remove(temp.ds)
-p <- 10
+
 new.base.ds$addr.2[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[6,c(2:3)] <- c("Missing address 2", paste(p, "% of records updated to remove address 2"))
+pre.process[6,c(2:3)] <- c("Missing address 2", paste(p,"% of records updated to remove address 2"))
 
 ```
 
@@ -137,9 +139,9 @@ pre.process[6,c(2:3)] <- c("Missing address 2", paste(p, "% of records updated t
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Missing County Name from Address
 remove(temp.ds)
-p <- 30
+
 new.base.ds$county[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[7,c(2:3)] <- c("Missing Country", paste(p, "% of records updated to remove Country"))
+pre.process[7,c(2:3)] <- c("Missing County", paste(p,"% of records updated to remove County information"))
 
 ```
 
@@ -147,19 +149,40 @@ pre.process[7,c(2:3)] <- c("Missing Country", paste(p, "% of records updated to 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Missing City Name from Address
 remove(temp.ds)
-p <- 20
+
 new.base.ds$cityname[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[8,c(2:3)] <- c("Missing Cityname", paste(p, "% of records updated to remove Cityname"))
+pre.process[8,c(2:3)] <- c("Missing Cityname", paste(p,"% of records updated to remove Cityname"))
 
 ```
 
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Same Address
-p <- 3
+
+temp.ds <- createRowWithSameFN(new.base.ds,p)
+changes.ds <- rbind(changes.ds,temp.ds)
+pre.process[9,c(2:3)] <- c("Same First Name", paste(p,"% of records created with same First Name"))
+
+```
+
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+###Same Address
+
+temp.ds <- createRowWithSameLN(new.base.ds,p)
+changes.ds <- rbind(changes.ds,temp.ds)
+pre.process[10,c(2:3)] <- c("Same Last Name", paste(p,"% of records created with same First Name"))
+
+```
+
+
+
+```{r, message=FALSE, warning=FALSE, include=FALSE}
+###Same Address
+
 temp.ds <- updateAddress(new.base.ds,p)
 changes.ds <- rbind(changes.ds,temp.ds)
-pre.process[9,c(2:3)] <- c("Identical Address", paste(nrow(temp.ds), "% of records updated to have identical address"))
+pre.process[11,c(2:3)] <- c("Identical Address", paste(p,"% of records updated to have identical address"))
 
 ```
 
@@ -168,48 +191,44 @@ pre.process[9,c(2:3)] <- c("Identical Address", paste(nrow(temp.ds), "% of recor
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Records for identical Twins living in the same address
-p <- 1
+
 remove(temp.ds)
 
 temp.ds <- updateTwins(new.base.ds,p)
 changes.ds <- rbind(changes.ds,temp.ds)
-pre.process[10,c(2:3)] <- c("Twins living in the same house", paste(nrow(temp.ds), "records are created with same last name and a random first name from the dataset to simulate twins living in the same house.  The record.id is tagged with 'T' to identify these records."))
+pre.process[12,c(2:3)] <- c("Twins living in the same house", paste(p,"% records are created with same last name and a random first name from the dataset to simulate twins living in the same house.  The record.id is tagged with 'T' to identify these records."))
 
 ```
 
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
 ###Records for Married couples living in the same address
-p <- 10
 remove(temp.ds)
 
 temp.ds <- updateCouples(new.base.ds,p)
 changes.ds <- rbind(changes.ds,temp.ds)
-pre.process[11,c(2:3)] <- c("Couples living in the same address", paste(nrow(temp.ds), "records created for couples living in the same house:",
+pre.process[13,c(2:3)] <- c("Couples living in the same address", paste(p,"% records created for couples living in the same house:",
 "The First Name is changed. " ,
 "The gender is changed to the opposite of the originial record. " ,
 "The record.id is tagged with 'C' to identify these records. "  ,
 "The date, month and year in DoB is changed  to a random number. ",
-"The forename is changed to a random name. " ))
+"The firstname is changed to a random name. " ))
 
 ```
 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 ###Altering name to simulate spelling mistakes
-p <- 75
 
-temp.ds <- alterFirstName(new.base.ds,"John","Jon",p)
-changes.ds <- rbind(changes.ds,temp.ds)
-temp.ds <- alterFirstName(new.base.ds,"Thompson","Thomson",p)
-changes.ds <- rbind(changes.ds,temp.ds)
-temp.ds <- alterFirstName(new.base.ds,"tt","t",p)
-changes.ds <- rbind(changes.ds,temp.ds)
+new.base.ds <- makeTypos(new.base.ds,"John","Jon",p)
+new.base.ds <- makeTypos(new.base.ds,"Thompson","Thomson",p)
 
-temp.ds <- alterLastName(new.base.ds,"ss","s",p)
+new.base.ds <- makeTypos(new.base.ds,"tt","t",p)
+
+new.base.ds <- makeTypos(new.base.ds,"ss","s",p)
 changes.ds <- rbind(changes.ds,temp.ds)
 
-pre.process[12,c(2:3)] <- c("Altering name to simulate spelling mistakes", paste(nrow(temp.ds), "of the records with a particular name is changed to a new one to simulate spelling mistatakes:  
+pre.process[14,c(2:3)] <- c("Altering name to simulate spelling mistakes", paste(p,"% of the records with a particular name is changed to a new one to simulate spelling mistatakes:  
 'John' is changed to 'Jon'  
 'Thompson' is changed to 'Thomson'  
 'tt' of words changed to single 't'" ))
@@ -241,12 +260,12 @@ The original dataset is updated with changes.  The total number of records for a
 
 ###Other Changes
 
-1.  The Character string are converted to lower case before comparison
+1.  Character strings are converted to lower case before comparison
 2.  Multiple character spaces are modified to single character spaces
 
 ```{r, message=FALSE, warning=FALSE, include=FALSE}
-new.base.ds$forename <- tolower(new.base.ds$forename)
-new.base.ds$surname <- tolower(new.base.ds$surname)
+new.base.ds$firstname <- tolower(new.base.ds$firstname)
+new.base.ds$lastname <- tolower(new.base.ds$lastname)
 new.base.ds$addr.1 <- tolower(new.base.ds$addr.1)
 new.base.ds$addr.2 <- tolower(new.base.ds$addr.2)
 new.base.ds$cityname <- tolower(new.base.ds$cityname)

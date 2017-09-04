@@ -358,13 +358,13 @@ updateAddress = function(df, p){
   
   for(i in 1:nrow(temp)){
     firstRow =  temp[i,]
-    firstRow$addr.1 <- as.character(temp[1,c("addr.1")]) # Take a random name from the forename column
+    firstRow$addr.1 <- as.character(temp[1,c("addr.1")]) # Take a random name from the firstname column
     firstRow$addr.2 <- as.character(temp[1,c("addr.2")])
     firstRow$cityname <- as.character(temp[1,c("cityname")]) 
     firstRow$postcode <- as.character(temp[1,c("postcode")])
     firstRow$county <- as.character(temp[1,c("county")])
-    firstRow$forename <- df$forename[sample(nrow(df),1)] # Take a random name from the forename column
-    firstRow$Surname <- df$surname[sample(nrow(df),1)] # Take a random name from the forename column
+    firstRow$firstname <- df$firstname[sample(nrow(df),1)] # Take a random name from the firstname column
+    firstRow$lastname <- df$lastname[sample(nrow(df),1)] # Take a random name from the firstname column
     firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
     firstRow$gender <- if(firstRow$gender=="male") "female" else "male"
     firstRow$record.id <- paste(temp$record.id[i],"Ad")
@@ -385,7 +385,7 @@ updateTwins = function(df, p){
   
   for(i in 1:nrow(temp)){
     firstRow =  temp[i,]
-    firstRow$forename <- df$forename[sample(nrow(df),1)] # Take a random name from the forename column
+    firstRow$firstname <- df$firstname[sample(nrow(df),1)] # Take a random name from the firstname column
     firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
     firstRow$record.id <- paste(temp$record.id[i],"T")
     result[i,]<- firstRow
@@ -405,7 +405,7 @@ updateCouples = function(df, p){
   
   for(i in 1:nrow(temp)){
     firstRow =  temp[i,]
-    firstRow$forename <- df$forename[sample(nrow(df),1)] # Take a random name from the forename column
+    firstRow$firstname <- df$firstname[sample(nrow(df),1)] # Take a random name from the firstname column
     firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
     firstRow$gender <- if(firstRow$gender=="male") "female" else "male"
     firstRow$b.month <- df$b.month[sample(nrow(df),1)] # Take a random month of birth
@@ -423,19 +423,17 @@ updateCouples = function(df, p){
 #input name to be changed
 #input suggested format
 
-alterFirstName = function(df,old,new,p){
+createRowWithSameFN = function(.df,p){
   
-  temp <- df[like(df$forename,old),]
-  
-  temp <- temp[c(1:(nrow(temp)*p/100)),] # Percentage of rows
-  result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
-  colnames(result) <- colnames(df)
+  temp <- .df[sample(nrow(.df),nrow(.df)*p/100),]
+  result <- data.frame(matrix(0, ncol = ncol(.df), nrow = 0))
+  colnames(result) <- colnames(.df)
   
   for(i in 1:nrow(temp)){
     firstRow =  temp[i,]
     firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
     firstRow$record.id <- paste(temp$record.id[i],"AFN")
-    firstRow$forename <- gsub(old, new, firstRow$surname)
+    firstRow$firstname <- temp$firstname[1]
     result[i,]<- firstRow
   }
   result
@@ -446,19 +444,17 @@ alterFirstName = function(df,old,new,p){
 #input name to be changed
 #input suggested format
 
-alterLastName = function(df,old, new,p){
+createRowWithSameLN = function(.df,p){
   
-  temp <- df[like(df$surname,old),]
-  #temp <- df[grep(df$surname, old), ]
-  temp <- temp[c(1:(nrow(temp)*p/100)),] # Percentage of rows
-  result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
-  colnames(result) <- colnames(df)
+  temp <- .df[sample(nrow(.df),nrow(.df)*p/100),]
+  result <- data.frame(matrix(0, ncol = ncol(.df), nrow = 0))
+  colnames(result) <- colnames(.df)
   
   for(i in 1:nrow(temp)){
     firstRow =  temp[i,]
     firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(temp$record.id[i],"ALN")
-    firstRow$surname <- gsub(old, new, firstRow$surname)
+    firstRow$record.id <- paste(temp$record.id[i],"AFN")
+    firstRow$lastname <- temp$lastname[1]
     result[i,]<- firstRow
   }
   result
@@ -469,7 +465,7 @@ alterLastName = function(df,old, new,p){
 #input name to be changed
 #input suggested format
 
-alterAddr1 = function(df,old,new,p){
+createRowWithSameAddr1 = function(df,old,new,p){
   
   temp <- df[like(df$addr.1,old),]
  
@@ -492,7 +488,7 @@ alterAddr1 = function(df,old,new,p){
 #input name to be changed
 #input suggested format
 
-alterAddr2 = function(df,old,new,p){
+createRowWithSameAddr2 = function(df,old,new,p){
   
   temp <- df[like(df$addr.2,old),]
   
@@ -508,4 +504,15 @@ alterAddr2 = function(df,old,new,p){
     result[i,]<- firstRow
   }
   result
+}
+
+
+makeTypos = function(.df,old,new,p){
+
+  for(i in 1: nrow(.df)*p/100){
+    test <- .df[sample(nrow(.df),1),]
+  .df[.df$record.id==test$record.id,] <- str_replace_all(test,old,new)
+ }
+return(.df)
+  
 }

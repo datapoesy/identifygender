@@ -1,34 +1,38 @@
 ---
-title: "04-Supervised Classification"
+title: "04-Classification Experiment"
 output:
   pdf_document: default
   html_document: default
 ---
 
 
-# Supervised Classification:
+#Classification Experiment:
 
-Supervised classifcation is possible with help of training data fed to the Learning Machine.  This can be achieved in two ways:  
+Table shows the output of Unsupervised, Supervised and Manual Classifications achieved on datasets of varied sizes.
 
-Availability of data where the identity of the records in the given domain are already labelled  
-Employ unsupervised training on a subset of the data which can further be employed to predict the larger dataset  
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+panderOptions('table.alignment.default','left')
+pander(TS.results, caption="Results from Classifications", short= TRUE, split.tables=150)
+```
+
+Legend for the classification results:
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+panderOptions('table.alignment.default','left')
+pander(results.desc, caption="Legend for the Classification Table", short= TRUE, split.tables=200)
+```
+
 
 ###Preparing a Minimal training set using clerical means
 
-In the following example, 216 pairs of records are labelled through manual inspection which is further utilized to classify the entire dataset.  
+**Notes**
+*  Iterations 1 to 5 uses individual Training sets created through clerical supervision  
+*  Iteration 6 (50 K records) uses the Training set from (10 K records)  
+*  The training set count increases from 30, 50, 90, 120, 150 across each of the iterations  
 
-```{r}
-#minTrain <- getMinimalTrain(rpairs)
+Clerical intervention is required in the case where a minimal training set is prepared.  The following figure shows the different scenarios and how the is_match column is updated to train the training set.  
 
-#minTrain <- editMatch(minTrain)
-#minTrain <- load(file="minTrain")
+This trained model is the input for Classification by the Machine.  
 
-#save(minTrain,file="minTrain")
-
-#model <-trainSupv(minTrain, method="bagging")
-#save(model,file="model")
-#model <- load(file="model")
-
-#result <- classifySupv(model, newdata=rpairs)
-#summary(result)
-```
+ <center>![Preparing a Minimal Training Set](training-data-1.png)</center>
