@@ -7,7 +7,7 @@ source("config/libraries.R")
 source("lib/helpers.R")
 
 #Reading customer data
-cust.rcds = read_csv(file="data/customers-10k.csv")
+cust.rcds = read_csv(file="data/customers-100k.csv")
 
 
 #Column filters for the dataset

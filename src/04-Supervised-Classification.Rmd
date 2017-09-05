@@ -11,6 +11,7 @@ output:
 Table shows the output of Unsupervised, Supervised and Manual Classifications achieved on datasets of varied sizes.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+TS.results <- read.csv(file="TS-results-10k.csv")
 panderOptions('table.alignment.default','left')
 pander(TS.results, caption="Results from Classifications", short= TRUE, split.tables=150)
 ```
