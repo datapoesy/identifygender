@@ -15,12 +15,12 @@ source("munge/01-A.R")
 # p = 8.2   -> 55%
 # p = 10    -> 50%
 
-#QS.results.40k <- iterateOverQuality (base.ds)
+#QS.results.30ka <- iterateOverQuality (base.ds)
 
 remove(changes.ds,non.dupli.ds,temp.ds,ds.00)
 
-QS.results.40k <- as.data.frame(matrix(0,ncol=19,nrow=6))
-colnames(QS.results.40k) <- c("No.","Total Records","Count Changes",
+QS.results.30ka <- as.data.frame(matrix(0,ncol=19,nrow=6))
+colnames(QS.results.30ka) <- c("No.","Total Records","Count Changes",
 "Non-Duplicates","Record Pairs","Quality %",
 "Us-N","Us-P","Us-L",
 "Ma-N","Ma-P","Ma-L",
@@ -32,7 +32,7 @@ pb = txtProgressBar(min = 0, max = 6, initial = 0)
 perc.value <- c(1.5, 3, 4.8, 6.5, 8.2, 10)
 i = 6
 set.seed(1234)
-ds.00 <-  base.ds[sample(nrow(base.ds),40000),]
+ds.00 <-  base.ds[sample(nrow(base.ds),30000),]
 remove(base.ds)
 setTxtProgressBar(pb,i)
 p <- perc.value[i]
@@ -136,27 +136,27 @@ min.train.ds <- classifySupv(model.00, newdata = rpairs.00)
 # ml.class.ds = classifySupv(model = us.model, newdata = l$valid)
 # summary(ml.class.ds)
 #updating Results Dataframe
-QS.results.40k[i, 1] <- i
-QS.results.40k[i, 2] <- nrow(ds.00)
-QS.results.40k[i, 3] <- nrow(changes.ds)
-QS.results.40k[i, 4] <- nrow(non.dupli.ds)
-QS.results.40k[i, 5] <- nrow(unsup.class.ds$pairs)
-QS.results.40k[i, 6] <- data.quality
-QS.results.40k[i, 7] <- summary(unsup.class.ds$prediction)[1]
-QS.results.40k[i, 8] <- summary(unsup.class.ds$prediction)[2]
-QS.results.40k[i, 9] <- summary(unsup.class.ds$prediction)[3]
-QS.results.40k[i, 10] <- summary(manual.class.ds$prediction)[1]
-QS.results.40k[i, 11]  <- summary(manual.class.ds$prediction)[2]
-QS.results.40k[i, 12]  <- summary(manual.class.ds$prediction)[3]
-QS.results.40k[i, 13]  <- summary(min.train.ds$prediction)[1]
-QS.results.40k[i, 14]  <- summary(min.train.ds$prediction)[2]
-QS.results.40k[i, 15]  <- summary(min.train.ds$prediction)[3]
-QS.results.40k[i, 16]  <- ""
-QS.results.40k[i, 17]  <- ""
-QS.results.40k[i, 18]  <- ""
-QS.results.40k[i, 19]  <-
-round((QS.results.40k[i, 15] / QS.results.40k[i, 4]) * 100, 2) # (1- (nrow(changes.ds)-nrow(non.dupli.ds)-summary(min.train.ds$prediction)[2])/nrow(changes.ds)-nrow(non.dupli.ds))*100
-QS.results.40k
+QS.results.30ka[i, 1] <- i
+QS.results.30ka[i, 2] <- nrow(ds.00)
+QS.results.30ka[i, 3] <- nrow(changes.ds)
+QS.results.30ka[i, 4] <- nrow(non.dupli.ds)
+QS.results.30ka[i, 5] <- nrow(unsup.class.ds$pairs)
+QS.results.30ka[i, 6] <- data.quality
+QS.results.30ka[i, 7] <- summary(unsup.class.ds$prediction)[1]
+QS.results.30ka[i, 8] <- summary(unsup.class.ds$prediction)[2]
+QS.results.30ka[i, 9] <- summary(unsup.class.ds$prediction)[3]
+QS.results.30ka[i, 10] <- summary(manual.class.ds$prediction)[1]
+QS.results.30ka[i, 11]  <- summary(manual.class.ds$prediction)[2]
+QS.results.30ka[i, 12]  <- summary(manual.class.ds$prediction)[3]
+QS.results.30ka[i, 13]  <- summary(min.train.ds$prediction)[1]
+QS.results.30ka[i, 14]  <- summary(min.train.ds$prediction)[2]
+QS.results.30ka[i, 15]  <- summary(min.train.ds$prediction)[3]
+QS.results.30ka[i, 16]  <- ""
+QS.results.30ka[i, 17]  <- ""
+QS.results.30ka[i, 18]  <- ""
+QS.results.30ka[i, 19]  <-
+round((QS.results.30ka[i, 15] / QS.results.30ka[i, 4]) * 100, 2) # (1- (nrow(changes.ds)-nrow(non.dupli.ds)-summary(min.train.ds$prediction)[2])/nrow(changes.ds)-nrow(non.dupli.ds))*100
+QS.results.30ka
 
 
 
