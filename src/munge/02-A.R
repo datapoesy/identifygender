@@ -17,7 +17,7 @@ source("munge/01-A.R")
 
 #QS.results.40k <- iterateOverQuality (base.ds)
 
-remove(changes.ds,non.dupli.ds,temp.ds)
+remove(changes.ds,non.dupli.ds,temp.ds,ds.00)
 
 QS.results.40k <- as.data.frame(matrix(0,ncol=19,nrow=6))
 colnames(QS.results.40k) <- c("No.","Total Records","Count Changes",
@@ -103,6 +103,9 @@ blockfld = list(4),
 phonetic = (3:4),
 exclude = c("record.id", "birth.date")
 )
+
+#============  pre processing complete ===========================
+
 rpairs.01 <- rpairs.00 # For unsupervised classification
 #Determine Weights
 rpairs.00 <- epiWeights(rpairs.00)
