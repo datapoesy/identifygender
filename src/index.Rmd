@@ -7,6 +7,7 @@ author: "Sreekumar Pillai"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook-pdf
+fig_caption: true
 documentclass: report
 Font size : 12 pt
 bibliography: [book.bib, packages.bib]
@@ -21,13 +22,13 @@ description: "This is an experiment in deduplication using Machine Learning appr
 \fontsize{12}{22}
 \selectfont
 
-Over the years, many organizations acquire duplicate records in their IT systems: each one in different forms.  The variations could be related to the type of records or to the kind of errors they pertain to; as in the case of very simple phonemic errors or even due to missing information in some of the records.  Customer records are the most frequent culprits in this aspect since they tend to register an alternate account at the first onset of not able to trace any previous registrations.  
+Over the years, many organizations acquire duplicate records in their IT systems: each one in different forms.  The variations could be related to the type of entities or to the kind of errors they pertain to; as in the case of elementary phonemic errors or even due to missing information in some of the records.  Customer records are the most frequent culprits in this aspect since they tend to register an alternate account at the first onset of not able to trace any previous registrations.  
   
-Consolidating these different records, by pairing up similar records and clearing away duplicate ones is referred to as, Record Linkage.  There are many custom products in the market claiming to achieve this functionality.  At the same time, in a practical sense, these tools still needs improvement from an accuracy standpoint and this analysis is expected to provide additional insight into the problem and solution by going a little into the basics to gain more control over the deduplication process and devise solutions with the most recent learnings in the discipline.  
+Consolidating these different records, by pairing up similar entities and clearing away duplicate ones is referred to as, Record Linkage.  While standard tools exist to achieve this functionality, this experiment is to get additional insight into the problem and solution through a deep dive into the basics for fine-grained control over the deduplication process.  
   
-This research attempts to solve the problem with simulated data.  The whole approach is documented for the purpose of reproducibility and future enhancement.  This study is more of an exploratory attempt to solve the Record Linkage problem from the Customer Records perspective than a scientific research towards any hypothesis testing.  
+This research attempts to solve the problem with simulated data.  The experiment is designed to be reproducible and extensible for further refinement.  At the same time, this is exploratory and approaches the Record Linkage problem from a practical perspective, unlike a  scientific research towards a hypothesis testing.  
 
-While there exists a major challenge with simulating real-world problems in a generated dataset, this provides more control over the input and output to the experiment, to verify the solution and its efficiency.  
+Challenges exist while simulating real-world problems in a generated dataset, however, more importantly, this provides better control over the input and output to the experiment, to verify the solution and its efficiency.  
 
-In conclusion, this experiment reports 95% accuracy by following a hybrid approach to deduplication employing clerical and Machine learning techniques.
+This controlled experiment process attempts Unsupervised Classification, Classification with weight thresholds and Supervised Classification using manually created training sets.  As the outcome, this experiment reports 99% accuracy, consistently, in deduplication by employing Supervised Classification using manually trained classifiers.
 

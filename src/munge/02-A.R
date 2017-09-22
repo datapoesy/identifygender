@@ -3,167 +3,352 @@ wd <- getwd()
 setwd("..")
 parent <- getwd()
 setwd(wd)
-source("munge/01-A.R")
+#source("munge/01-A.R")
 
-# Sets the counter for processing==========================
-#========================================================
-# p = 0.075 -> 80%
-# p = 1.5   -> 75%
-# p = 3     -> 70%
-# p = 4.8   -> 65%
-# p = 6.5   -> 60%
-# p = 8.2   -> 55%
-# p = 10    -> 50%
+## Set the count of records in the dataset
+base.ds <- read.csv(file="rdscsvfiles/base.ds.csv", stringsAsFactors = FALSE)[,-c(1)]
+desc.base.ds <- read.csv(file="rdscsvfiles/desc.base.ds.csv")[,-c(1)]
 
-#QS.results.30ka <- iterateOverQuality (base.ds)
+ds.count <- 5000
 
-remove(changes.ds,non.dupli.ds,temp.ds,ds.00)
+perc.value <- c(1, 2, 4, 8, 16)
 
-QS.results.30ka <- as.data.frame(matrix(0,ncol=19,nrow=6))
-colnames(QS.results.30ka) <- c("No.","Total Records","Count Changes",
-"Non-Duplicates","Record Pairs","Quality %",
-"Us-N","Us-P","Us-L",
-"Ma-N","Ma-P","Ma-L",
-"St-N","St-P","St-L",
-"Ml-N","Ml-P","Ml-L",
-"% Records Ident.")
-#-----------------------------------------------------------------
-pb = txtProgressBar(min = 0, max = 6, initial = 0)
-perc.value <- c(1.5, 3, 4.8, 6.5, 8.2, 10)
-i = 6
+i = 1
+
 set.seed(1234)
-ds.00 <-  base.ds[sample(nrow(base.ds),30000),]
-remove(base.ds)
-setTxtProgressBar(pb,i)
-p <- perc.value[i]
 
-changes.ds <- data.frame(matrix(0, ncol = ncol(ds.00), nrow = 0))
-non.dupli.ds <- data.frame(matrix(0, ncol = ncol(ds.00), nrow = 0))
-colnames(changes.ds) <- colnames(ds.00)
-changes.ds$some.id <- as.character(changes.ds$some.id)
-changes.ds$m.nmbr <- as.character(changes.ds$m.nmbr)
-changes.ds$h.nmbr <- as.character(changes.ds$h.nmbr)
-changes.ds$birth.date <- as.character(changes.ds$birth.date)
-changes.ds$postcode <- as.character(changes.ds$postcode)
-#simulate missing email id
+## Sample dataset from the original 100K records
+ds.00 <-  base.ds[sample(nrow(base.ds),ds.count),]
+
+
+## set a percentage value for data to be disorganized
+p <- 4
+
+## create a data frame to store duplicated records
+dupli.ds <- data.frame(matrix(0, ncol = ncol(ds.00), nrow = 0))
+colnames(dupli.ds) <- colnames(ds.00)
+
+dupli.ds$some.id <- as.character(dupli.ds$some.id)
+dupli.ds$m.nmbr <- as.character(dupli.ds$m.nmbr)
+dupli.ds$h.nmbr <- as.character(dupli.ds$h.nmbr)
+dupli.ds$birth.date <- as.character(dupli.ds$birth.date)
+dupli.ds$postcode <- as.character(dupli.ds$postcode)
+
+## create a dataframe to store non-duplicated records
+non.dupli.ds <- dupli.ds
+
+#simulate missing email id - write into the base dataset
 ds.00$email[sample(nrow(ds.00), nrow(ds.00) * p / 100)] <- ''
+
 #simulate missing home phone numbers
-ds.00$h.nmbr[sample(nrow(ds.00), nrow(ds.00) * 40 / 100)] <- ''
+ds.00$h.nmbr[sample(nrow(ds.00), nrow(ds.00) * p / 100)] <- ''
+
 ###Missing Mobile phone numbers
 ds.00$m.nmbr[sample(nrow(ds.00), nrow(ds.00) * p / 100)] <- ''
+
 #Simulate missing postcodes
 ds.00$postcode[sample(nrow(ds.00), nrow(ds.00) * p / 100)] <- ''
+
 ###Simulate Missing Address 1 from Address
 ds.00$addr.1[sample(nrow(ds.00), nrow(ds.00) * p / 100)] <- ''
+
 ###simulate Missing Address 2 from Address
 ds.00$addr.2[sample(nrow(ds.00), nrow(ds.00) * p / 100)] <- ''
+
 ###Simulate Missing County Name from Address
 ds.00$county[sample(nrow(ds.00), nrow(ds.00) * p / 100)] <- ''
+
 ###Simulate Missing City Name from Address
 ds.00$cityname[sample(nrow(ds.00), nrow(ds.00) * p / 100)] <- ''
-###Duplicate records with same  address
-temp.ds <- updateAddress(ds.00, p)
-changes.ds <- rbind(changes.ds, temp.ds)
-###Duplicate records with same  FirstName
-temp.ds <- createRowWithSameFN(ds.00, p)
-changes.ds <- rbind(changes.ds, temp.ds)
-###Duplicate records with same  LastName
-temp.ds <- createRowWithSameLN(ds.00, p)
-changes.ds <- rbind(changes.ds, temp.ds)
-###Duplicate Records for identical Twins living in the same address
-pt <- 0.2* i
-remove(temp.ds)
-temp.ds <- updateTwins(ds.00, pt)
-changes.ds <- rbind(changes.ds, temp.ds)
-non.dupli.ds <- rbind(non.dupli.ds, temp.ds)
+
+#-------------------------------------------------------------------------
+
+###Clone  records with same  address
+temp.ds <- clonePerson(ds.00, p)
+dupli.ds <- rbind(dupli.ds, temp.ds$clones)
+
+dupli.ds <- dupli.ds[!duplicated(dupli.ds$record.id),]
+
+write.csv(dupli.ds,file="dupli.ds.5k.csv")
+
+
+###Duplicate Records for identical Twins living in the same address,
+## also pass the list of record ids that has been used.
+pt <- 0.05*p
+
+temp.ds <- createTwins(temp.ds$ds.99, pt)
+non.dupli.ds <- rbind(non.dupli.ds, temp.ds$twins) # Non-duplicates means individual people
+non.dupli.ds <- non.dupli.ds[!duplicated(non.dupli.ds$record.id),]
+
+write.csv(non.dupli.ds,file="non.dupli.ds.5k.csv")
 ###Duplicate Records for Married couples living in the same address
 # % of couples in the loan availing population = 50%
 # % of couples living in the same address = 80%
 # Combined percentage of the above = 40%
-pc <- 5* i
-remove(temp.ds)
-temp.ds <- updateCouples(ds.00, pc)
-changes.ds <- rbind(changes.ds, temp.ds)
-non.dupli.ds <- rbind(non.dupli.ds, temp.ds)
+pc <- 5*p
+temp.ds <- createCouples(temp.ds$ds.99, pc)
+non.dupli.ds <- rbind(non.dupli.ds, temp.ds$couples)
+
+#---------------------------------------------------------------
+
 ###Create Typographical errors name to simulate spelling mistakes
 ds.00 <- makeTypos(ds.00, "John", "Jon", pc)
 ds.00 <- makeTypos(ds.00, "Thompson", "Thomson", pc)
 ds.00 <- makeTypos(ds.00, "tt", "t", pc)
 ds.00 <- makeTypos(ds.00, "ss", "s", pc)
+
 #=====================================================================
-changes.ds <- rbind(changes.ds, temp.ds)
-ds.00 <- rbind(ds.00, changes.ds)
-data.quality <-
-round((nrow(ds.00) - nrow(changes.ds) - nrow(non.dupli.ds)) / nrow(ds.00), 2)
+
+ds.00 <- rbind(ds.00, dupli.ds)
+ds.00 <- rbind(ds.00,non.dupli.ds)
+
+record.count <- nrow(ds.00)
+
+write.csv(ds.00,file="ds.00.csv")
+
+#==================================================================
+#This is for the report:
+
+pre.process <-as.data.frame(matrix(ncol = 3, nrow = 0))
+colnames(pre.process) <- c("Sl.No.","Change","Description")
+
+pre.process[1,c(2:3)] <- c("Missing email ids", 
+                           paste(p,"% of records updated to remove email ids"))
+
+pre.process[2,c(2:3)] <- c("Missing home phone numbers", 
+                           paste(p,"% of records updated to remove home phone numbers"))
+
+pre.process[3,c(2:3)] <- c("Missing mobile phone numbers", 
+                           paste(p,"% of records updated to remove mobile phone numbers"))
+
+pre.process[4,c(2:3)] <- c("Missing post codes", 
+                           paste(p,"% of records updated to remove post codes"))
+
+pre.process[5,c(2:3)] <- c("Missing address 1 from address", 
+                           paste(p,"% of records updated to remove address 1"))
+
+pre.process[6,c(2:3)] <- c("Missing address 2", 
+                           paste(p,"% of records updated to remove address 2"))
+
+pre.process[7,c(2:3)] <- c("Missing county names", 
+                           paste(p,"% of records updated to remove county names"))
+
+pre.process[8,c(2:3)] <- c("Missing Cityname", 
+                           paste(p,"% of records updated to remove Cityname"))
+
+pre.process[9,c(2:3)] <- c("clone Records", 
+                           paste(nrow(dupli.ds)," records cloned to represent duplicate records"))
+
+pre.process[10,c(2:3)] <- c("Entities with same DoB and same address", 
+                          paste(pt,"% records are created with same last name and a 
+                          random first name from the dataset to simulate twins living in the same house.  
+                          The record.id is tagged with 'T' to identify these records."))
+
+pre.process[11,c(2:3)] <- c("Married couples living in the same address", 
+                          paste(pc,"% records created for couples living in the same house:",
+                          "The First Name is changed. " ,
+                          "The gender is changed to the opposite of the originial record. " ,
+                          "The record.id is tagged with 'C' to identify these records. "  ,
+                          "The date, month and year in DoB is changed  to a random number. ",
+                          "The firstname is changed to a random name. " ))
+
+
+pre.process[12,c(2:3)] <- c("Altering name to simulate spelling mistakes", 
+                          paste(pc,"% of the records with a particular name is 
+                          changed to a new one to simulate spelling mistatakes:
+                          'John' is changed to 'Jon'  
+                         'Thompson' is changed to 'Thomson'  
+                         'tt' of words changed to single 't'" ))
+
+pre.process[12,c(2:3)] <- c("Clone Entities to create duplicate records 
+                          to be potentially identified by the dedup engine.", 
+                          paste(pc,"% of the original records created new.  These records are created to be 
+                          duplicates and tagged with a 'D'. The records are cloned and subsequently, 20% of first names have their trailing vowel sounds removed.  The last names are stripped of their beginning vowels replaced with a new 'some.id'. 20% of records are stripped of their email address, NIS, County names etc. 20% have their addresses modified.  20% have their postcodes removed. 20% have the gender information removed." ))
+
+pre.process[,c(1)]<- c(1:nrow(pre.process))
+colnames(pre.process) <- c("Sl.No","Scenario","Description")
+
+
+
+
+#===================  dataset complete =========================
+
+
+
 #Creating comparison vectors
-rpairs.00 <-
-compare.dedup(
-ds.00,
-blockfld = list(4),
-phonetic = (3:4),
-exclude = c("record.id", "birth.date")
-)
+rpairs.00 <- compare.dedup(ds.00,blockfld = list(4,c(16,17,18)),phonetic = c(3,4),
+                           exclude = c("record.id","some.id", "birth.date"), n_match = 4000)
+rpairs.11 <- rpairs.00
+rpairs.22 <- rpairs.00
+rpairs.33 <- rpairs.00
+rpairs.00 <- rpairs.22
+#============================================================
 
-#============  pre processing complete ===========================
+#Unsupervised classification with epiclassify
 
-rpairs.01 <- rpairs.00 # For unsupervised classification
-#Determine Weights
-rpairs.00 <- epiWeights(rpairs.00)
-#========================================================================
-#Manual Classification using thresholds from the previous result
-manual.class.ds <- epiClassify(rpairs.00, 0.7, 0.40)
-#========================================================================
-#Unsupervised Classification
-unsup.class.ds <- classifyUnsup(rpairs.01, method = "kmeans")
-#========================================================================
-###Supervised clasification
-##minTrain.00 <- getMinimalTrain(rpairs.00)
-#minTrain.00 <- editMatch(minTrain.00)
-# load("D:/Assembla/deduplication/src/minTrain.00-10KTrainingRecords.Rdata")
-model.00 <- trainSupv(minTrain.00, method = "rpart")
-min.train.ds <- classifySupv(model.00, newdata = rpairs.00)
-#summary(result)
-#================================================================
-# #Training a classifier with ML
-# l = splitData(
-#   rpairs.01,
-#   prop = 1,
-#   keep.mprop = FALSE,
-#   use.pred = FALSE
-# )
-# us.model = trainSupv(l$train, method = "rpart", minsplit = 5)
-# save(us.model, file = str_c("us.model", i))
-# ml.class.ds = classifySupv(model = us.model, newdata = l$valid)
-# summary(ml.class.ds)
-#updating Results Dataframe
-QS.results.30ka[i, 1] <- i
-QS.results.30ka[i, 2] <- nrow(ds.00)
-QS.results.30ka[i, 3] <- nrow(changes.ds)
-QS.results.30ka[i, 4] <- nrow(non.dupli.ds)
-QS.results.30ka[i, 5] <- nrow(unsup.class.ds$pairs)
-QS.results.30ka[i, 6] <- data.quality
-QS.results.30ka[i, 7] <- summary(unsup.class.ds$prediction)[1]
-QS.results.30ka[i, 8] <- summary(unsup.class.ds$prediction)[2]
-QS.results.30ka[i, 9] <- summary(unsup.class.ds$prediction)[3]
-QS.results.30ka[i, 10] <- summary(manual.class.ds$prediction)[1]
-QS.results.30ka[i, 11]  <- summary(manual.class.ds$prediction)[2]
-QS.results.30ka[i, 12]  <- summary(manual.class.ds$prediction)[3]
-QS.results.30ka[i, 13]  <- summary(min.train.ds$prediction)[1]
-QS.results.30ka[i, 14]  <- summary(min.train.ds$prediction)[2]
-QS.results.30ka[i, 15]  <- summary(min.train.ds$prediction)[3]
-QS.results.30ka[i, 16]  <- ""
-QS.results.30ka[i, 17]  <- ""
-QS.results.30ka[i, 18]  <- ""
-QS.results.30ka[i, 19]  <-
-round((QS.results.30ka[i, 15] / QS.results.30ka[i, 4]) * 100, 2) # (1- (nrow(changes.ds)-nrow(non.dupli.ds)-summary(min.train.ds$prediction)[2])/nrow(changes.ds)-nrow(non.dupli.ds))*100
-QS.results.30ka
+cl.results.11 <- as.data.frame(matrix(0,ncol=9,nrow=1))
+
+colnames(cl.results.11) <- c("No.","Total.Records","Duplicates",
+                             "Non.Duplicates","Record.Pairs","Quality.Perc",
+                             "Ident.Pairs","Pairs.Perc"  )
+
+results.11 <- epiWeights(rpairs.11, e=0.01, f =rpairs.11$frequencies)
+summary(results.11)
+
+results.11.dupli <- getPairs(results.11,1,0.85)
+
+results.11.dupli.count <- nrow(results.11.dupli)
+
+unsup.results.11 <- classifyUnsup(rpairs.11, method = "kmeans")
 
 
+data.quality <- round(ds.count/record.count *100,2)
+
+# Recording Results 
+#===================================================================
 
 
+cl.results.11[1, 1] <- 1
+cl.results.11[1, 2] <- record.count
+cl.results.11[1, 3] <- nrow(dupli.ds)
+
+cl.results.11[1, 4] <- nrow(non.dupli.ds)
+cl.results.11[1, 5] <- nrow(unsup.results.11$pairs)
+cl.results.11[1, 6] <- data.quality
+cl.results.11[1, 7] <- summary(unsup.results.11$prediction)[3]
+cl.results.11[1, 8] <- round(summary(unsup.results.11$prediction)[3]/nrow(dupli.ds)*100,2)
+
+write.csv(cl.results.11,file="cl.results.11.csv")
 
 
-#201 links detected
-#225 possible links detected
-#6526 non-links detected
-#=========================================================================
+#=====================================================================
+
+#Unsupervised classification using Optimal thresholds
+#============================================================
+
+
+cl.results.33 <- as.data.frame(matrix(0,ncol=9,nrow=1))
+
+colnames(cl.results.33) <- c("No.","Total.Records","Duplicates",
+                             "Non.Duplicates","Record.Pairs","Quality.Perc",
+                             "Ident.Pairs","Pairs.Perc",
+                             "Train.Count")
+
+results.33 <- epiWeights(rpairs.33, e=0.01, f =rpairs.11$frequencies)
+minTrain.33 <- readRDS(file="rdscsvfiles/minTrain.00Pairs20000.rds")
+opt.threshold <- optimalThreshold(minTrain.33)
+
+count.train <- nrow(minTrain.33$pairs)
+unsup.results.33 <- epiClassify(results.33, opt.threshold)
+
+
+results.33.dupli <- getPairs(unsup.results.33, show="links")
+results.33.dupli.count <- nrow(results.33.dupli)
+
+# Recording Results 
+#===================================================================
+
+
+cl.results.33[1, 1] <- 1
+cl.results.33[1, 2] <- record.count
+cl.results.33[1, 3] <- nrow(dupli.ds)
+
+cl.results.33[1, 4] <- nrow(non.dupli.ds)
+cl.results.33[1, 5] <- nrow(unsup.results.33$pairs)
+cl.results.33[1, 6] <- data.quality
+cl.results.33[1, 7] <- summary(unsup.results.33$prediction)[3]
+cl.results.33[1, 8] <- round(summary(unsup.results.33$prediction)[3]/nrow(dupli.ds)*100,2)
+cl.results.33[1, 9] <- count.train
+
+write.csv(cl.results.33,file="cl.results.33.csv")
+
+
+#=====================================================================
+###Supervised clasification with Minimal Training Set
+#=====================================================================
+
+cl.results.00 <- as.data.frame(matrix(0,ncol=9,nrow=1))
+
+colnames(cl.results.00) <- c("No.","Total.Records","Duplicates",
+                             "Non.Duplicates","Record.Pairs","Quality.Perc",
+                             "Ident.Pairs","Pairs.Perc",
+                             "Train.Count")
+
+
+#Reading manually trained data
+
+minTrain.00 <- readRDS(file="rdscsvfiles/minTrain.00Pairs20000.rds")
+
+count.train <- nrow(minTrain.00$pairs)
+rpairs.00 <- epiWeights(rpairs.00, e=0.01, f =rpairs.00$frequencies)
+model.00 <- trainSupv(minTrain.00, method = "rpart",minsplit=1) # Training method is passed as argument
+results.00 <- classifySupv(model.00, newdata = rpairs.00)
+
+
+data.quality <- round(ds.count/record.count *100,2)
+
+# Recording Results 
+#===================================================================
+
+
+cl.results.00[1, 1] <- 1
+cl.results.00[1, 2] <- record.count
+cl.results.00[1, 3] <- nrow(dupli.ds)
+
+cl.results.00[1, 4] <- nrow(non.dupli.ds)
+cl.results.00[1, 5] <- nrow(results.00$pairs)
+cl.results.00[1, 6] <- data.quality
+cl.results.00[1, 7]  <- summary(results.00$prediction)[3]
+cl.results.00[1, 8]  <- round(summary(results.00$prediction)[3]/nrow(dupli.ds)*100,2)
+cl.results.00[1, 9] <- count.train
+
+ident.pairs.00 <- getPairs(results.00,show="links")
+
+write.csv(cl.results.00,file="cl.results.00.csv")
+#============================================================================================
+#============================================================================================
+
+
+###Supervised clasification with trained classifier from Unsupervised Classification
+
+cl.results.22 <- as.data.frame(matrix(0,ncol=9,nrow=1))
+
+colnames(cl.results.22) <- c("No.","Total.Records","Duplicates",
+                             "Non.Duplicates","Record.Pairs","Quality.Perc",
+                             "Tc.L","Tc.Perc",
+                             "Train.Count")
+
+rpairs.22 <- epiWeights(rpairs.22)
+
+min.train.22 <- readRDS(file="rdscsvfiles/minTrain.00Pairs20000.rds")
+
+count.train <- nrow(min.train.22$pairs)
+results.22 <- classifyUnsup(min.train.22, method = "kmeans")
+
+data.quality <- round(ds.count/record.count *100,2)
+
+model.22 <- trainSupv(min.train.22, method = "rpart",minsplit=1) # Training method is passed as argument
+min.results.22 <- classifySupv(model.22, newdata = rpairs.22)
+summary(min.results.22)
+
+# Recording Results 
+#===================================================================
+
+
+cl.results.22[1, 1] <- 1
+cl.results.22[1, 2] <- record.count
+cl.results.22[1, 3] <- nrow(dupli.ds)
+
+cl.results.22[1, 4] <- nrow(non.dupli.ds)
+cl.results.22[1, 5] <- nrow(results.33$pairs)
+cl.results.22[1, 6] <- data.quality
+cl.results.22[1, 7]  <- summary(min.results.22$prediction)[3]
+cl.results.22[1, 8]  <- round(summary(min.results.22$prediction)[3]/nrow(dupli.ds)*100,2)
+cl.results.22[1, 9] <- count.train
+
+
+#============================================================================================
+
+
+#results.all.exp <- runAllExpTrainedClassifier()
+#write.csv(results.all.exp, file="results.all.exp.csv")

@@ -1,5 +1,5 @@
 ---
-title: "01-Dataset and Simulations"
+title: "02-Dataset and Simulations"
 output:
   pdf_document: default
   html_document: default
@@ -7,32 +7,46 @@ output:
 
 
 ```{r load libraries, message=FALSE, warning=FALSE, include=FALSE}
-setwd("D:/Assembla/deduplication")
-source("src/config/libraries.R")
-source("src/lib/helpers.R")
-source("src/munge/01-A.R")
+setwd("D:/Assembla/deduplication/src")
+wd <- getwd()
+setwd("..")
+parent <- getwd()
+setwd(wd)
+
+source("config/libraries.R")
+source("lib/helpers.R")
+#source("munge/01-A.R")
+source("munge/03-A.R")
 ```
 
 # Dataset and Simulation
 
-This chapter explains the process of generating the dataset and the pre-processing steps to infuse real-world problems into it.
+This chapter explains the process of generating the dataset and the pre-processing steps to infuse real-world scenarios into it.
 
 ##Data Preparation  
 
-The dataset currently used for analysis is simulated.  There are two datasets 1customer10000 and 2customer10000 that holds identical number of rows and the same parameters, but generated with different seed values.
- <center>![Test data generation](data-generation.png)</center>
+The base dataset is one with 100K records, complete across all fields and unique in all aspects, representing 100% ideal data.  This is generated using PHP, directly into a Postgresql DB (for future BigData analytics), further exported to .csv files for processing in R.  
 
-The data is generated using Php and inserted to Postgresql db and further exported to .csv files.  There are two dataset generated in the same manner with same seed values:  one with 2k records for initial solution building and a 50k set for further validation of the solution.  
+To conduct the base experiment, `r ds.count ` records are randomly sampled from the base population.  This dataset is taken through a "debasing" process to build real-world scenarios into it.  While simulating all scenarios will practically challenging, this provides control to define the quality of data for analysis.  The figure illustrates the data preparation processes:  
+<span>
+
+<center>
+!["Data Generation Process"](data-generation.png){width=120% }</center>
+<h4><center>Figure.2.1 Data Generation Process</center></h4>
+</span>
+
 
 
 ##Description of the Dataset
 
 The following table gives a description of the dataset used for analysis:
 
-Total number of rows in the dataset = `r nrow(base.ds)`
+Total number of rows in the base dataset = `r nrow(base.ds)`
+
+Number of rows in the random sampled dataset = `r ds.count`
 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r chapter 2-1, echo=FALSE, message=FALSE, warning=FALSE}
 
 panderOptions('table.alignment.default','left')
 pander(desc.base.ds, caption="Description of Dataset", short= TRUE, split.tables=150)
@@ -47,232 +61,49 @@ The data is simulated to reflect real-life quality issues.  This is done program
 
 Once established, the solution could be applied across larger datasets to assess its extensibility and accuracy.  
 
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-pre.process <-as.data.frame(matrix(ncol = 3, nrow = 0))
-colnames(pre.process) <- c("Sl.No.","Change","Description")
 
-```
-
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-
-set.seed(1234)
-new.base.ds <-  base.ds[sample(nrow(base.ds),2000),]
-
-changes.ds <-  data.frame(matrix(0, ncol = ncol(base.ds), nrow = 0))
-colnames(changes.ds) <- colnames(base.ds)
-changes.ds$some.id <- as.character(changes.ds$some.id)
-changes.ds$m.nmbr <- as.character(changes.ds$m.nmbr)
-changes.ds$h.nmbr <- as.character(changes.ds$h.nmbr)
-changes.ds$birth.date <- as.character(changes.ds$birth.date)
-changes.ds$postcode <- as.character(changes.ds$postcode)
-# panderOptions('table.alignment.default','left')
-# pander(temp.ds, caption="Description of Dataset", short= TRUE, split.tables=150)
-
-p <- 2.5 # Change this percentage to modify higher percentages:
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Missing e-mail ID
-remove(temp.ds)
-## Provide number of the column whose value needs to be changed
-#new.base.ds <- removeColumnValue(new.base.ds,7,20)
-new.base.ds$email[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[1,c(2:3)] <- c("Missing email ids", paste(p,"% of records updated to remove email ids"))
-
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Missing Home phone numbers
-remove(temp.ds)
-
-new.base.ds$h.nmbr[sample(nrow(new.base.ds), nrow(new.base.ds)*40/100)] <- ''
-pre.process[2,c(2:3)] <- c("Missing home phone numbers", paste(p,"% of records updated to remove home phone numbers"))
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Missing Mobile phone numbers
-remove(temp.ds)
-
-new.base.ds$m.nmbr[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[3,c(2:3)] <- c("Missing mobile phone numbers", paste(p,"% of records updated to remove mobile phone numbers"))
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Missing Postcode from Address
-remove(temp.ds)
-
-new.base.ds$postcode[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[4,c(2:3)] <- c("Missing postcodes from address", paste(p,"% of records updated to remove postcode"))
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Missing Address 1 from Address
-remove(temp.ds)
-
-new.base.ds$addr.1[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[5,c(2:3)] <- c("Missing address 1", paste(p,"% of records updated to remove address 1"))
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Missing Address 2 from Address
-remove(temp.ds)
-
-new.base.ds$addr.2[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[6,c(2:3)] <- c("Missing address 2", paste(p,"% of records updated to remove address 2"))
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Missing County Name from Address
-remove(temp.ds)
-
-new.base.ds$county[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[7,c(2:3)] <- c("Missing County", paste(p,"% of records updated to remove County information"))
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Missing City Name from Address
-remove(temp.ds)
-
-new.base.ds$cityname[sample(nrow(new.base.ds), nrow(new.base.ds)*p/100)] <- ''
-pre.process[8,c(2:3)] <- c("Missing Cityname", paste(p,"% of records updated to remove Cityname"))
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Same Address
-
-temp.ds <- createRowWithSameFN(new.base.ds,p)
-changes.ds <- rbind(changes.ds,temp.ds)
-pre.process[9,c(2:3)] <- c("Same First Name", paste(p,"% of records created with same First Name"))
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Same Address
-
-temp.ds <- createRowWithSameLN(new.base.ds,p)
-changes.ds <- rbind(changes.ds,temp.ds)
-pre.process[10,c(2:3)] <- c("Same Last Name", paste(p,"% of records created with same First Name"))
-
-```
-
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Same Address
-
-temp.ds <- updateAddress(new.base.ds,p)
-changes.ds <- rbind(changes.ds,temp.ds)
-pre.process[11,c(2:3)] <- c("Identical Address", paste(p,"% of records updated to have identical address"))
-
-```
-
-
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Records for identical Twins living in the same address
-
-remove(temp.ds)
-
-temp.ds <- updateTwins(new.base.ds,p)
-changes.ds <- rbind(changes.ds,temp.ds)
-pre.process[12,c(2:3)] <- c("Twins living in the same house", paste(p,"% records are created with same last name and a random first name from the dataset to simulate twins living in the same house.  The record.id is tagged with 'T' to identify these records."))
-
-```
-
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-###Records for Married couples living in the same address
-remove(temp.ds)
-
-temp.ds <- updateCouples(new.base.ds,p)
-changes.ds <- rbind(changes.ds,temp.ds)
-pre.process[13,c(2:3)] <- c("Couples living in the same address", paste(p,"% records created for couples living in the same house:",
-"The First Name is changed. " ,
-"The gender is changed to the opposite of the originial record. " ,
-"The record.id is tagged with 'C' to identify these records. "  ,
-"The date, month and year in DoB is changed  to a random number. ",
-"The firstname is changed to a random name. " ))
-
-```
-
-
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-###Altering name to simulate spelling mistakes
-
-new.base.ds <- makeTypos(new.base.ds,"John","Jon",p)
-new.base.ds <- makeTypos(new.base.ds,"Thompson","Thomson",p)
-
-new.base.ds <- makeTypos(new.base.ds,"tt","t",p)
-
-new.base.ds <- makeTypos(new.base.ds,"ss","s",p)
-changes.ds <- rbind(changes.ds,temp.ds)
-
-pre.process[14,c(2:3)] <- c("Altering name to simulate spelling mistakes", paste(p,"% of the records with a particular name is changed to a new one to simulate spelling mistatakes:  
-'John' is changed to 'Jon'  
-'Thompson' is changed to 'Thomson'  
-'tt' of words changed to single 't'" ))
-
-pre.process[,c(1)]<- c(1:nrow(pre.process))
-colnames(pre.process) <- c("Sl.No","Scenario","Description")
-
-
+```{r chapter 2-2, echo=FALSE, message=FALSE, warning=FALSE}
 panderOptions('table.alignment.default','left')
-pander(pre.process, caption="Preprocessing Dataset", short= TRUE, split.tables=250)
+pander(pre.process, caption="Preprocessing Dataset", short= TRUE, split.tables=250, 
+       split.cells = c(15,30,55))
 ```
 
-  
+##Duplicate records created manually
 
+The following table lists five sample records that have been created manually""
 
-**Total Number of Records Added: `r nrow(changes.ds) ` **  
+```{r chapter 2-3, echo=FALSE, message=FALSE, warning=FALSE}
+panderOptions('table.alignment.default','left')
+head.dupli.ds <- head(dupli.ds,3)
 
-##Preprocessing
+head.dupli.ds.a <- head.dupli.ds[,c(1:6)]
+head.dupli.ds.b <- head.dupli.ds[,c(7:12)]
+head.dupli.ds.c <- head.dupli.ds[,c(13:18)]
+pander(head.dupli.ds.a, caption="Illustration of Duplicate Records", short= TRUE, split.tables=180, split.cells = c(15,45,35,35,20,30),keep.line.breaks = TRUE)
+pander(head.dupli.ds.b, caption="Illustration of Duplicate Records ...contd", short= TRUE, split.tables=180, split.cells = c(20,28,42,42,20,28),keep.line.breaks = TRUE)
+pander(head.dupli.ds.c, caption="Illustration of Duplicate Records ...contd", short= TRUE, split.tables=180, split.cells = c(35,60,40,15,15,15),keep.line.breaks = TRUE)
 
-###Original Dataset updated with changes
-
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-new.base.ds <- rbind(new.base.ds, changes.ds)
-
+remove(head.dupli.ds,head.dupli.ds.a,head.dupli.ds.b,head.dupli.ds.c)
 ```
 
+At this stage, the subset dataset reflects real-world data quality.  
 
-The original dataset is updated with changes.  The total number of records for analysis is :  ** `r nrow(new.base.ds)` **
+###Preprocessing before deduplication
 
-###Other Changes
+* Character strings are converted to lower case before comparison
+* Multiple character spaces are modified to single character spaces
 
-1.  Character strings are converted to lower case before comparison
-2.  Multiple character spaces are modified to single character spaces
 
-```{r, message=FALSE, warning=FALSE, include=FALSE}
-new.base.ds$firstname <- tolower(new.base.ds$firstname)
-new.base.ds$lastname <- tolower(new.base.ds$lastname)
-new.base.ds$addr.1 <- tolower(new.base.ds$addr.1)
-new.base.ds$addr.2 <- tolower(new.base.ds$addr.2)
-new.base.ds$cityname <- tolower(new.base.ds$cityname)
-new.base.ds$county <- tolower(new.base.ds$county)
+##Definitions of Quality and Accuracy
 
-# Remove unused objects from memory
-remove(p,desc.base.ds,temp.ds,cust.rcds)
+###Data Quality
+Within the framework of the current experiment, quality refers to the quantity of "debasing" performed on the base data to make it simulate real-world data.  Quantitatively, the quality is expressed as the ratio between duplicate records to the total number of records.  While this definition does not claim scientific sanction, a quantitative representation of data quality and accuracy of the deduplication engine can be relatively represented by such a number.
 
-```
+$Quality = N(duplicates)/ N(total records) * 100$
+
+###Accuracy
+Accuracy refers to the number of duplicate records that the engine has been able to identify against the total number of duplicate records.  The experiment framework keeps track of the duplicate records and the count, and this facilitates one-on-one comparison with the output of the deduplication process.
+
+$Accuracy = N(created duplicates) - N(identified duplicates)/ N(created duplicates)$
+
 

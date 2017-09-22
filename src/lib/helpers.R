@@ -41,27 +41,6 @@ NAhunter<-function(dataset) {
 
 
 
-## This function converts required variables to factor variables for analysis
-
-convFactors  <-  function(){
-  
-  isbsg.trim$ind.sector <-  factor(isbsg.trim$ind.sector)
-  isbsg.trim$appl.group <-   factor(isbsg.trim$appl.group)
-  isbsg.trim$dev.type  <-  factor(isbsg.trim$dev.type)
-  isbsg.trim$count.appr <- factor(isbsg.trim$count.appr)
-  
-  isbsg.trim$dev.methods <-  revalue(isbsg.trim$dev.methods, c("Agile Development;"="Scrum","Agile Development;Extreme Programming (XP);Iterative;Rapid Application Development (RAD);Scrum;Timeboxing;Unified Process;IMES OOM;" ="XP","Agile Development;Iterative;" ="Iterative","Agile Development;Joint Application Development (JAD);Multifunctional Teams;"="JAD","Agile Development;Multifunctional Teams;Scrum;"="Scrum","Agile Development;Personal Software Process (PSP);Unified Process;"="PSP","Agile Development;Scrum;"="Scrum","Agile Development;Unified Process;"="AUP","Extreme Programming (XP);"="XP","Incremental;"="Incrmental","Interactive;"="Iterative","IT Unified Process (ITUP);" ="ITUP","Iterative;"="Iterative","Iterative;Unified Process;"="Iterative","Joint Application Development (JAD);"="JAD","Joint Application Development (JAD);Multifunctional Teams;" ="JAD","Joint Application Development (JAD);Multifunctional Teams;Rapid Application Development (RAD);"="RAD","Joint Application Development (JAD);Multifunctional Teams;Rapid Application Development (RAD);Timeboxing;"="RAD","Joint Application Development (JAD);Multifunctional Teams;Timeboxing;"="RAD","Joint Application Development (JAD);Rapid Application Development (RAD);"="RAD","Joint Application Development (JAD);Rapid Application Development (RAD);Timeboxing;"="RAD","Joint Application Development (JAD);Timeboxing;"="RAD","Lean;"="Scrum","Multifunctional Teams;"="Waterfall","Multifunctional Teams;Rapid Application Development (RAD);"="RAD","Multifunctional Teams;Rapid Application Development (RAD);Timeboxing;"="RAD","Multifunctional Teams;Timeboxing;"="RAD","Multifunctional Teams;Unified Process;" ="AUP","Multifunctional Teams;Waterfall (includes Linear Processing);"="Waterfall","OCE;"="OCE","Personal Software Process (PSP);"="PSP","Personal Software Process (PSP);Unified Process;"="PSP","Rapid Application Development (RAD);"="RAD","Rapid Application Development (RAD);Timeboxing;"="RAD","Scrum;"="Scrum","Spiral;"="Spiral","Timeboxing;"="RAD","Unified Process;"  ="AUP","Waterfall (incl Linear Processing & SSADM);"="Waterfall","Waterfall (includes Linear Processing);"="Waterfall"))
-  
-  
-  isbsg.trim$fp.stand <- revalue(isbsg.trim$fp.stand,c("Addendum to existing standards"="Others","Auto-generated"="Auto-generated","CFFP v2"="CFFP","Cfsu"="CFFP","Charismatek Manual (IFPUG 2)"="IFPUG-FP","COSMIC"="COSMIC-FP","COSMIC-FFP"="COSMIC-FP","COSMIC-FFP 2.2"="COSMIC-FP","COSMIC-FFP 2002"="COSMIC-FP","COSMIC 1.1"="COSMIC-FP","COSMIC 2"="COSMIC-FP","COSMIC 2.0"="COSMIC-FP","COSMIC 2.1"="COSMIC-FP","COSMIC 2.2"="COSMIC-FP","COSMIC 3"="COSMIC-FP","COSMIC 3.0"="COSMIC-FP","COSMIC 3.0.1"="COSMIC-FP","COSMIC 3.01"="COSMIC-FP","COSMIC 4.0"="COSMIC-FP","COSMIC FPs"="COSMIC-FP","Counter experience with some input from Phil Hain"="Others","CPM4.0;Addendum to existing standards;"="Others","Dialog Manual (based on IFPUG 2)"="IFPUG-FP","Dreger Book"="Others","Feature Points"="Feature Points","FFP"="Feature Points","FFP 1.0"="Feature Points","FiSMA"="FISMA","FP"="IFPUG-FP","IFPUG"="IFPUG-FP","IFPUG 1"="IFPUG-FP","IFPUG 2"="IFPUG-FP","IFPUG 2;IFPUG 3;IFPUG 4;"="IFPUG-FP","IFPUG 2006 B"="IFPUG-FP","IFPUG 3"="IFPUG-FP","IFPUG 3.4"="IFPUG-FP","IFPUG 3;Addendum to existing standards;"="IFPUG-FP","IFPUG 3;IFPUG 4;"="IFPUG-FP","IFPUG 3;In-house;"="IFPUG-FP","IFPUG 3;In-house;Addendum to existing standards;"="IFPUG-FP","IFPUG 4"="IFPUG-FP","IFPUG 4 & Other - Unspecified"="IFPUG-FP","IFPUG 4 / Automated"="IFPUG-FP","IFPUG 4.0"="IFPUG-FP","IFPUG 4.0 & Addendum to existing standards"="IFPUG-FP","IFPUG 4.1"="IFPUG-FP","IFPUG 4.1;customisation of rules to provide clarifications;"="IFPUG-FP","IFPUG 4.2"="IFPUG-FP","IFPUG 4.2.1"="IFPUG-FP","IFPUG 4.3"="IFPUG-FP","IFPUG 4;Addendum to existing standards;"="IFPUG-FP","IFPUG 4;In-house;"="IFPUG-FP","IFPUG FP"="IFPUG-FP","IFPUG local"="IFPUG-FP","IFPUG Unspecified"="IFPUG-FP","IFPUG/Hans Vonk"="IFPUG-FP","IFPUG/NESMA"="IFPUG-FP","In-house"="In-house","ISO/IEC 19761:2002"="COSMIC-FP","ISO/IEC FDIS 19761:2002"="COSMIC-FP","ISO/IEC FDIS 19761:2002(E)"="COSMIC-FP","Mark II"="Mark2-FP","Mk II"="Mark2-FP","NEFPUG"="Nesma-FP","NESMA"="Nesma-FP","NESMA 2.0"="Nesma-FP","NESMA 2.2"="Nesma-FP","Nesma Onderh."="Nesma-FP","Nesma onderhoud"="Nesma-FP","not given"="Not-given","not given said to be Mark II"="Mark2-FP","Original Albrecht's Method"="IFPUG-FP","Other"="Others","SLOC;OO count;"="Others","SPR backfile"="Others","Symons Mark II"="Mark2-FP","Symons Mark II;UFPUG Guidelines;"="Mark2-FP","UFPUG mk2"="Mark2-FP"))
-  
-  isbsg.trim$fp.stand <- factor(isbsg.trim$fp.stand)
-  
-  isbsg.trim$team.size.gp <- revalue(isbsg.trim$team.size.gp,c("101+"="Above 101"))
-  
-  isbsg.trim$team.size.gp <-factor(isbsg.trim$team.size.gp,c("1","2","3-4","5-8","9-14","15-20","21-30","31-40","41-50","51-60","61-70","71-80","81-90","91-100","Above 101"))
-  
-}
 
 
 ## Replaces NAs with the given string  ---------------------------------
@@ -86,26 +65,6 @@ createConfusionMatrix <- function(act, pred) {
   sapply(split(pred, act), tabulate, nbins=numClasses)
 }
 
-
-# Function that returns Root Mean Squared Error
-rmse <- function(actual, predicted)
-   
-  
-{
-  # Calculate error
-  error <- actual - predicted
-  
-  sqrt(mean(error^2))
-}
-
-# Function that returns Mean Absolute Error  ---------------------------------
-mae <- function(actual, predicted)
-{
-  
-  # Calculate error
-  error <- actual - predicted
-  mean(abs(error))
-}
 
 # Multiple plot function
 #
@@ -164,11 +123,6 @@ rem_outliers <- function(x, na.rm = TRUE,...){
 }
 
 
-helper.function <- function()
-{
-  return(1)
-}
-
 
 ## Find outliers
 findOutlier <- function(data, cutoff = 3) {
@@ -211,39 +165,6 @@ transform_lognormal <- function(data){
   data
 }
 
-## Function to make profile plot
-makeProfilePlot <- function(mylist,names)
-{
-  require(RColorBrewer)
-  # find out how many variables we want to include
-  numvariables <- length(mylist)
-  # choose ’numvariables’ random colours
-  colours <- brewer.pal(numvariables,"Set1")
-  # find out the minimum and maximum values of the variables:
-  mymin <- 1e+20
-  mymax <- 1e-20
-  for (i in 1:numvariables)
-  {
-    vectori <- mylist[[i]]
-    mini <- min(vectori)
-    maxi <- max(vectori)
-    if (mini < mymin) { mymin <- mini }
-    if (maxi > mymax) { mymax <- maxi }
-  }
-  # plot the variables
-  for (i in 1:numvariables)
-  {
-    vectori <- mylist[[i]]
-    namei <- names[i]
-    colouri <- colours[i]
-    if (i == 1) { plot(vectori,col=colouri,type="l",ylim=c(mymin,mymax)) }
-    else { points(vectori, col=colouri,type="l") }
-    lastxval <- length(vectori)
-    lastyval <- vectori[length(vectori)]
-    text((lastxval-10),(lastyval),namei,col="black",cex=0.6)
-  }
-}
-
 
 ## Function to show most highly correlated data ---------------------------------
 mosthighlycorrelated <- function(mydataframe,numtoreport)
@@ -263,31 +184,6 @@ mosthighlycorrelated <- function(mydataframe,numtoreport)
 }
 
 
-## function to fill missing VAF ------------- ---------------------------------
-fillmissingVAF = function(x){
-  
-  for(i in 1:nrow(x)){
-    
-    if(is.na(x[i,7])){
-      if(!is.na(x[i,5])&&!is.na(x[i,6])){
-        #value.af = adj.funct.size/funct.size
-        x[i,7] <- x[i,5]/x[i,6]
-      }
-    }
-    
-    if(is.na(x[i,6])){
-      if(!is.na(x[i,5])&&!is.na(x[i,7])){
-        # funct.size = adj.funct.size / value.af
-        x[i,6] <- x[i,5]/x[i,7]
-      }
-      
-    }
-    
-  }
-  x
-  
-}
-
 #Function to remove rows based on NA values in specific columns---------------------------------
 
 completeFun <- function(data, desiredCols) {
@@ -296,214 +192,176 @@ completeFun <- function(data, desiredCols) {
 }
 
 
+#Function to clone a person -------------------------------
 
-#Function to retrieve number of rows based on a percentage -------------------------------------
-#input dataframe and percentage value in real number
-
-giveRandomRows = function(df,p){
-  return(df[sample(nrow(df),p*nrow(df)/100),])
-}
-
-
-#Function to change column values with the value of the first row-------------------------------
-#input dataframe 
-#input column name
-#input percentage of the dataset to be changed in % real number
-
-
-changeColumnValue = function(df, c.name,p){
+clonePerson = function(.df, p){
+  #set.seed(123)
   
-  temp <- (df[sample(nrow(df),p*nrow(df)/100),])
-  fn <- temp[1,c.name]
-  temp[,c.name]<- fn
-  temp
+  .result <- data.frame(matrix(0, ncol = ncol(.df), nrow = 0))
+  colnames(.result) <- colnames(.df)
+  .rs <- .result
   
-}
-
-
-#Function to change column values with the value of the first row-------------------------------
-#input dataframe 
-#input column name
-#input percentage of the dataset to be changed in % real number
-removeColumnValue = function(df,col.num,p){
+  .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
   
-  df[sample(nrow(df), nrow(df)*p/100), ][col.num] <- ''
-}
-
-#Function to change column values with a given string -------------------------------
-#input dataframe 
-#input column name
-#input new value as a string
-#input percentage of the dataset to be changed in % real number
-
-updateColumnValue = function(df, c.name,newValue,p){
+  #remove the used rows to avoid repeated selection
+  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
   
-  temp <- (df[sample(nrow(df),p*nrow(df)/100),])
-  temp[c.name]<- newValue
-  temp
-}
-
-
-#Function to change address values with a given string -------------------------------
-#input dataframe 
-#input column name
-#input new value as a string
-#input percentage of the dataset to be changed in % real number
-
-updateAddress = function(df, p){
-  
-  temp <- (df[sample(nrow(df),p*nrow(df)/100),]) # Percentage of rows
-  result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
-  colnames(result) <- colnames(df)
-  
-  for(i in 1:nrow(temp)){
-    firstRow =  temp[i,]
-    firstRow$addr.1 <- as.character(temp[1,c("addr.1")]) # Take a random name from the firstname column
-    firstRow$addr.2 <- as.character(temp[1,c("addr.2")])
-    firstRow$cityname <- as.character(temp[1,c("cityname")]) 
-    firstRow$postcode <- as.character(temp[1,c("postcode")])
-    firstRow$county <- as.character(temp[1,c("county")])
-    firstRow$firstname <- df$firstname[sample(nrow(df),1)] # Take a random name from the firstname column
-    firstRow$lastname <- df$lastname[sample(nrow(df),1)] # Take a random name from the firstname column
+  for(i in 1:nrow(.temp)){
+    ## Take values from .temp dataframe
+    firstRow =  .temp[i,]
+    firstRow$firstname <- gsub('(a|e|i|o|u){1,}$','',.temp[i,c("firstname")]) # Remove trailing vowel sounds
+    firstRow$addr.1 <- gsub('(A|E|I|O|U){1,}','',.temp[i,c("addr.1")])# Remove beginning vowels
     firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$gender <- if(firstRow$gender=="male") "female" else "male"
-    firstRow$record.id <- paste(temp$record.id[i],"Ad")
-    result[i,]<- firstRow
+    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    .rs[i,]<- firstRow
   }
-  result
-
-}
-
-
-#Function to create twins living in the same address with the same last name
-
-updateTwins = function(df, p){
+  .result <- rbind(.result,.rs)
   
-  temp <- (df[sample(nrow(df),p*nrow(df)/100),]) # Percentage of rows
-  result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
-  colnames(result) <- colnames(df)
+  .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
   
-  for(i in 1:nrow(temp)){
-    firstRow =  temp[i,]
-    firstRow$firstname <- df$firstname[sample(nrow(df),1)] # Take a random name from the firstname column
+  #remove the used rows to avoid repeated selection
+  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  
+  for(i in 1:nrow(.temp)){
+    ## Take values from .temp dataframe
+    firstRow =  .temp[i,]
+    firstRow$lastname <- gsub('(a|e|i|o|u){1,}$','',.temp[i,c("lastname")]) # Remove trailing vowel sounds
+    firstRow$gender <- ''# Remove gender Name
     firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(temp$record.id[i],"T")
-    result[i,]<- firstRow
+    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    .rs[i,]<- firstRow
   }
-  result
-}
-
-
-
-#Function to create twins living in the same address with the same last name
-
-updateCouples = function(df, p){
-  
-  temp <- (df[sample(nrow(df),p*nrow(df)/100),]) # Percentage of rows
-  result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
-  colnames(result) <- colnames(df)
-  
-  for(i in 1:nrow(temp)){
-    firstRow =  temp[i,]
-    firstRow$firstname <- df$firstname[sample(nrow(df),1)] # Take a random name from the firstname column
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$gender <- if(firstRow$gender=="male") "female" else "male"
-    firstRow$b.month <- df$b.month[sample(nrow(df),1)] # Take a random month of birth
-    firstRow$b.day <- df$b.day[sample(nrow(df),1)] # Take a random month of birth
-    firstRow$b.year <- df$b.year[sample(nrow(df),1)] # Take a random month of birth
-    firstRow$record.id <- paste(temp$record.id[i],"C")
-    result[i,]<- firstRow
-  }
-  result
-}
-
-
-
-#Function to alter names to suggested ones
-#input name to be changed
-#input suggested format
-
-createRowWithSameFN = function(.df,p){
-  
-  temp <- .df[sample(nrow(.df),nrow(.df)*p/100),]
-  result <- data.frame(matrix(0, ncol = ncol(.df), nrow = 0))
-  colnames(result) <- colnames(.df)
-  
-  for(i in 1:nrow(temp)){
-    firstRow =  temp[i,]
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(temp$record.id[i],"AFN")
-    firstRow$firstname <- temp$firstname[1]
-    result[i,]<- firstRow
-  }
-  result
-}
-
-
-#Function to alter names to suggested ones
-#input name to be changed
-#input suggested format
-
-createRowWithSameLN = function(.df,p){
-  
-  temp <- .df[sample(nrow(.df),nrow(.df)*p/100),]
-  result <- data.frame(matrix(0, ncol = ncol(.df), nrow = 0))
-  colnames(result) <- colnames(.df)
-  
-  for(i in 1:nrow(temp)){
-    firstRow =  temp[i,]
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(temp$record.id[i],"AFN")
-    firstRow$lastname <- temp$lastname[1]
-    result[i,]<- firstRow
-  }
-  result
-}
-
-
-#Function to alter addr.1 field
-#input name to be changed
-#input suggested format
-
-createRowWithSameAddr1 = function(df,old,new,p){
-  
-  temp <- df[like(df$addr.1,old),]
+  .result <- rbind(.result,.rs)
  
-  temp <- temp[c(1:(nrow(temp)*p/100)),] # Percentage of rows
-  result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
-  colnames(result) <- colnames(df)
+  .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
   
-  for(i in 1:nrow(temp)){
-    firstRow =  temp[i,]
+  #remove the used rows to avoid repeated selection
+  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  
+  for(i in 1:nrow(.temp)){
+    ## Take values from .temp dataframe
+    firstRow =  .temp[i,]
+    firstRow$lastname <- gsub('(t|e|i|o|z){1,}$','',.temp[i,c("lastname")]) # Remove trailing vowel sounds
+    firstRow$county <- ''# Remove county
     firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(temp$record.id[i],"AADD1")
-    firstRow$addr.1 <- gsub(old, new, firstRow$addr.1)
-    result[i,]<- firstRow
+    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    .rs[i,]<- firstRow
   }
-  result
+  .result <- rbind(.result,.rs)
+  
+  
+  .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
+  
+  #remove the used rows to avoid repeated selection
+  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  
+  for(i in 1:nrow(.temp)){
+    ## Take values from .temp dataframe
+    firstRow =  .temp[i,]
+    firstRow$lastname <- gsub('(l|n|i){1,}$','',.temp[i,c("lastname")]) # Remove trailing vowel sounds
+    firstRow$postcode <- '' # Remove postcode
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    .rs[i,]<- firstRow
+  }
+  .result <- rbind(.result,.rs)
+ 
+  .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
+  
+  #remove the used rows to avoid repeated selection
+  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  
+  for(i in 1:nrow(.temp)){
+    ## Take values from .temp dataframe
+    firstRow =  .temp[i,]
+    firstRow$postcode <- '' # Remove postcode
+    firstRow$nis <- ''
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    
+    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    .rs[i,]<- firstRow
+  }
+  .result <- rbind(.result,.rs)
+ 
+  .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
+  
+  #remove the used rows to avoid repeated selection
+  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  
+  for(i in 1:nrow(.temp)){
+    ## Take values from .temp dataframe
+    firstRow =  .temp[i,]
+    firstRow$gender <- ''# Remove gender Name
+    firstRow$b.year <- '' # Remove birth year
+    firstRow$b.month <- '' # Remove birth month
+    firstRow$b.day <- '' # Remove birth day
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    .rs[i,]<- firstRow
+  }
+  .result <- rbind(.result,.rs)
+ 
+  .newList <- list("ds.99" = .df, "clones" = .result)
+  return (.newList)
+
 }
 
 
-#Function to alter addr.2 field
-#input name to be changed
-#input suggested format
+#Function to create twins living in the same address with the same last name
 
-createRowWithSameAddr2 = function(df,old,new,p){
-  
-  temp <- df[like(df$addr.2,old),]
-  
-  temp <- temp[c(1:(nrow(temp)*p/100)),] # Percentage of rows
-  result <- data.frame(matrix(0, ncol = ncol(df), nrow = 0))
-  colnames(result) <- colnames(df)
-  
-  for(i in 1:nrow(temp)){
-    firstRow =  temp[i,]
+createTwins = function(.df, p, .used.ids){
+ 
+  .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
+  .result <- data.frame(matrix(0, ncol = ncol(.df), nrow = 0))
+  colnames(.result) <- colnames(.df)
+  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+ 
+  for(i in 1:nrow(.temp)){
+    firstRow =  .temp[i,]
+ 
+    firstRow$firstname <- .df$firstname[sample(nrow(.df),1)] # Take a random name from the firstname column
     firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(temp$record.id[i],"AADD2")
-    firstRow$addr.2 <- gsub(old, new, firstRow$addr.2)
-    result[i,]<- firstRow
+    firstRow$email <- r_email_addresses(1)
+    firstRow$m.nmbr <- r_phone_numbers(1)
+    nis.number <- paste( sample( 1:9, 7, replace=TRUE ), collapse="" )
+    firstRow$nis <-  gsub("[[:space:]]", "", paste("NN",nis.number))# AA8371307
+    firstRow$record.id <- paste(.temp$record.id[i],"T")
+    .result[i,]<- firstRow
+    
   }
-  result
+  .newList <- list("ds.99" = .df, "twins" = .result)
+  return (.newList)
+ 
+}
+
+
+
+#Function to create couples living in the same address with the same last name
+
+createCouples = function(.df, p){
+
+  .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
+  .result <- data.frame(matrix(0, ncol = ncol(.df), nrow = 0))
+  
+  colnames(.result) <- colnames(.df)
+  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  
+  for(i in 1:nrow(.temp)){
+    firstRow =  .temp[i,]
+    firstRow$firstname <- .df$firstname[sample(nrow(.df),1)] # Take a random name from the firstname column
+    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$gender <- if(firstRow$gender=="male") "female" else "male"
+    firstRow$b.month <- .df$b.month[sample(nrow(.df),1)] # Take a random month of birth
+    firstRow$b.day <- .df$b.day[sample(nrow(.df),1)] # Take a random month of birth
+    firstRow$b.year <- .df$b.year[sample(nrow(.df),1)] # Take a random month of birth
+    firstRow$m.nmbr <- r_phone_numbers(1)
+    firstRow$email <- r_email_addresses(1)
+    firstRow$record.id <- paste(.temp$record.id[i],"C")
+    .result[i,]<- firstRow
+  }
+ 
+  .newList <- list("ds.99" = .df, "couples" = .result)
+  .newList
 }
 
 
@@ -516,3 +374,174 @@ makeTypos = function(.df,old,new,p){
 return(.df)
   
 }
+
+
+#
+#
+## This script file iterates from the already created datasets
+## "record.id","some.id", "birth.date","m.nmbr","h.nmbr"
+
+# Function to iterate all experiments for Unsupervised classification      
+runAllExpUnsupervised <- function( ){ # for supervised training
+  
+  
+  rds.pairs.tracker <- read.csv(file="rds.pairs.tracker.csv", stringsAsFactors=FALSE)
+  
+  
+  classfn.results.parent <- as.data.frame(matrix(0,ncol=9,nrow=0))
+  
+  colnames(classfn.results.parent) <- c("No.","Total.Records","Duplicates",
+                                        "Non.Duplicates","Record.Pairs","Quality.Perc",
+                                        "Us.N","Us.P","Us.L")
+  comp.pairs <- NULL
+  
+  #-----------------------------------------------------------------
+  pb = txtProgressBar(min = 0, max = 5, initial = 0)
+  perc.value <- c(1, 2, 4, 8, 16)
+  
+  
+  training.set <- readRDS(file="TrainSet_1000.rds")
+  opt.threshold <- optimalThreshold(training.set)
+  
+  for(j in 1:6){   # This refers to the iterations
+    
+    classfn.results <- as.data.frame(matrix(0,ncol=9,nrow=0))
+    
+    colnames(classfn.results) <- c("No.","Total.Records","Duplicates",
+                                   "Non.Duplicates","Record.Pairs","Quality.Perc",
+                                   "Us.N","Us.P","Us.L")
+    for( i in 1:5){
+      
+      q.rating <- perc.value[i] 
+      #reading the saved data pairs into memory
+      current.rpairs <- readRDS(file=rds.pairs.tracker$Rds.Filename[rds.pairs.tracker$Iteration.No==j & rds.pairs.tracker$Quality.Rating==q.rating])
+      
+      ## Determining Optimal Threshold
+      #opt.threshold <- optimalThreshold(minTrain.00)
+      record.count <- rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==j & rds.pairs.tracker[, "Quality.Rating"]==q.rating,]$Total.Records
+      dupli.ds <- rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==j & rds.pairs.tracker[, "Quality.Rating"]==q.rating,]$Duplicates
+      non.dupli.ds <- rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==j & rds.pairs.tracker[, "Quality.Rating"]==q.rating,]$Non.Duplicates
+      data.quality <- rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==j & rds.pairs.tracker[, "Quality.Rating"]==q.rating,]$Quality.Perc
+      
+      rpairs.00 <-current.rpairs
+      rpairs.11 <-current.rpairs
+      rpairs.33 <-current.rpairs
+      
+      
+      
+      ###Supervised classification
+      rpairs.00 <- epiWeights(rpairs.00)
+      result <- epiClassify(rpairs.00, opt.threshold)
+      
+      # Recording Results 
+      #===================================================================
+      
+      
+      classfn.results[i, 1] <- i
+      classfn.results[i, 2] <- record.count
+      classfn.results[i, 3] <- dupli.ds
+      
+      classfn.results[i, 4] <- non.dupli.ds
+      classfn.results[i, 5] <- nrow(rpairs.00$pairs)
+      classfn.results[i, 6] <- data.quality
+      
+      classfn.results[i, 8] <- summary(result$prediction)[2] # Us.N
+      classfn.results[i, 9] <- summary(result$prediction)[3] # Us.P
+      classfn.results[i, 7] <- summary(result$prediction)[1] #Us.L
+      
+      
+    }
+    
+    classfn.results.parent <- rbind(classfn.results.parent,classfn.results)
+  }
+  classfn.results.parent
+  
+}
+
+
+#==========================================================================
+#==========================================================================
+
+
+
+runAllExpTrainedClassifier <- function(){ # for supervised training
+  
+  setwd("D:/Assembla/deduplication/src")
+  classfn.results.parent <- as.data.frame(matrix(0,ncol=11,nrow=0))
+  
+  
+  rds.pairs.tracker <- read.csv(file="rds.pairs.tracker.csv",stringsAsFactors=FALSE)
+  
+  
+  colnames(classfn.results.parent) <- c("No.","Total.Records","Duplicates",
+                                        "Non.Duplicates","Record.Pairs","Quality.Perc",
+                                        "Tc.N","Tc.P","Tc.L","Accuracy","Error")
+  
+  
+  #-----------------------------------------------------------------
+  pb = txtProgressBar(min = 0, max = 5, initial = 0)
+  perc.value <- c(1, 2, 4, 8, 16)
+  
+  for(j in 1:6){   # This refers to quality specified across the columns
+    
+    classfn.results <- as.data.frame(matrix(0,ncol=9,nrow=0))
+    
+    colnames(classfn.results) <- c("No.","Total.Records","Duplicates",
+                                   "Non.Duplicates","Record.Pairs","Quality.Perc","Ident.Pairs","Accuracy","Error")
+    
+    
+    for(i in 1:5){
+      .q.rating <- perc.value[i]
+      
+      #reading the saved data pairs into memory
+      current.rpairs <- readRDS(file=rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==j & rds.pairs.tracker[, "Quality.Rating"]==.q.rating,]$Rds.Filename)
+      # minTrain.00 <- readRDS(file=rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==1 & rds.pairs.tracker[, "Quality.Rating"]==.q.rating,]$Train.Set)
+      minTrain.00 <- readRDS(file="minTrain.00Pairs20000.rds")
+      
+      ## Determining Optimal Threshold
+      
+      record.count <- rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==j & rds.pairs.tracker[, "Quality.Rating"]==.q.rating,]$Total.Records
+      dupli.ds <- rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==j & rds.pairs.tracker[, "Quality.Rating"]==.q.rating,]$Duplicates
+      non.dupli.ds <- rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==j & rds.pairs.tracker[, "Quality.Rating"]==.q.rating,]$Non.Duplicates
+      data.quality <- rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==j & rds.pairs.tracker[, "Quality.Rating"]==.q.rating,]$Quality.Perc
+      
+      current.rpairs <- compare.dedup(current.rpairs,blockfld = list(4,c(16,17,18)),phonetic = c(3,4),
+                                      exclude = c("record.id","some.id", "birth.date"), n_match = 4000)
+      
+      
+      
+      current.rpairs <- epiWeights(current.rpairs, e=0.01, f =current.rpairs$frequencies)
+      
+      model.22 <- trainSupv(minTrain.00, method = "rpart",minsplit=1) # Training method is passed as argument
+      
+      results.22 <- classifySupv(model.22, newdata = current.rpairs)
+      
+      #  summary(results.22)
+      
+      
+      # Recording Results 
+      #===================================================================
+      
+      
+      classfn.results[i, 1] <- i
+      classfn.results[i, 2] <- record.count
+      classfn.results[i, 3] <- dupli.ds
+      
+      classfn.results[i, 4] <- non.dupli.ds
+      classfn.results[i, 5] <- nrow(results.22$pairs)
+      classfn.results[i, 6] <- data.quality
+      classfn.results[i, 7] <- summary(results.22$prediction)[3]
+      
+      classfn.results[i, 8] <- round(summary(results.22$prediction)[3]/dupli.ds*100,2)
+      classfn.results[i, 9] <- (100-(round(summary(results.22$prediction)[3]/dupli.ds*100,2)))
+      
+      
+    }
+    classfn.results.parent <- rbind(classfn.results.parent,classfn.results)
+  }
+  
+  classfn.results.parent
+  
+}
+
+#======================================================

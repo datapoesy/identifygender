@@ -42,6 +42,7 @@ desc.base.ds$Description <- c("Unique ID in the dataset","Some Org ID","First Na
 
 desc.base.ds$No. <- c(1:nrow(desc.base.ds))
 desc.base.ds <-desc.base.ds[,c(3,2,1)]
+write.csv(desc.base.ds, file="desc.base.ds.csv")
 #------------------------------------------------------------------------------------------------
 
 base.ds$b.year <- format(base.ds$birth.date, format='%y')
@@ -57,48 +58,18 @@ base.ds$some.id <- as.character(base.ds$some.id)
 base.ds$m.nmbr <- as.character(base.ds$m.nmbr)
 base.ds$h.nmbr <- as.character(base.ds$h.nmbr)
 base.ds$birth.date <- as.character(base.ds$birth.date)
+base.ds$email <- as.character(base.ds$email)
+base.ds$addr.1 <- as.character(base.ds$addr.1)
+base.ds$addr.2 <- as.character(base.ds$addr.2)
+base.ds$county <- as.character(base.ds$county)
 base.ds$postcode <- as.character(base.ds$postcode)
+base.ds$nis <- as.character(base.ds$nis)
+
+
+
+write.csv(base.ds, file="base.ds.csv")
 
 remove(cust.rcds)
-
-#replicate the dataset for processing
-
-results <- as.data.frame(matrix(0,ncol=19,nrow=6))
-
-TS.results <- as.data.frame(matrix(0,ncol=19,nrow=6))
-
-
-colnames(TS.results) <- c("No.","Total Records","Count Changes",
-                          "Non-Duplicates","Record Pairs","Quality %",
-                          "Us-N","Us-P","Us-L",
-                          "Ma-N","Ma-P","Ma-L",
-                          "St-N","St-P","St-L",
-                          "Ml-N","Ml-P","Ml-L",
-                          "% Records Ident.")
-
-colnames(results) <- c("No.","Total Records","Count Changes",
-                          "Non-Duplicates","Record Pairs","Quality %",
-                          "Us-N","Us-P","Us-L",
-                          "Ma-N","Ma-P","Ma-L",
-                          "St-N","St-P","St-L",
-                          "Ml-N","Ml-P","Ml-L",
-                          "% Records Ident.")
-
-# Sets the legend table for processing==========================
-#========================================================  
-results.desc <- as.data.frame(matrix("",ncol=3, nrow=19))
-colnames(results.desc) <- c("No.","Item","Description")
-results.desc[,1] <- c(1: nrow(results.desc))
-results.desc[,2] <- colnames(TS.results) 
-results.desc[,3] <- c("Record Order","Total Records in the Iteration","Number of Records changed",
-                      "Records created to represent new entities", "Pairs identified by the comaprator engine",
-                      "Quality is the percentage of fake records to the total records.  Typographical errors are not considered in this 
-                      representation of quality.",
-                      "Unsupervised Classification - Non Links","Potential Links","Confirmed Links",
-                      "Manual Classification - Non Links","Potential Links","Confirmed Links",
-                      "Supervised Classification. Training Set - Non Links","Potential Links","Confirmed Links",
-                      "Supervised Classification using ML trained classifier - Non Links","Potential Links","Confirmed Links",
-                      "Accuracy is no of machine identified links/ number of records from direct observation.")
 
 
 
