@@ -69,7 +69,7 @@ dupli.ds <- rbind(dupli.ds, temp.ds$clones)
 
 dupli.ds <- dupli.ds[!duplicated(dupli.ds$record.id),]
 
-write.csv(dupli.ds,file="dupli.ds.5k.csv")
+write.csv(dupli.ds,file="results/dupli.ds.5k.csv")
 
 
 ###Duplicate Records for identical Twins living in the same address,
@@ -80,7 +80,7 @@ temp.ds <- createTwins(temp.ds$ds.99, pt)
 non.dupli.ds <- rbind(non.dupli.ds, temp.ds$twins) # Non-duplicates means individual people
 non.dupli.ds <- non.dupli.ds[!duplicated(non.dupli.ds$record.id),]
 
-write.csv(non.dupli.ds,file="non.dupli.ds.5k.csv")
+write.csv(non.dupli.ds,file="results/non.dupli.ds.5k.csv")
 ###Duplicate Records for Married couples living in the same address
 # % of couples in the loan availing population = 50%
 # % of couples living in the same address = 80%
@@ -104,7 +104,7 @@ ds.00 <- rbind(ds.00,non.dupli.ds)
 
 record.count <- nrow(ds.00)
 
-write.csv(ds.00,file="ds.00.csv")
+write.csv(ds.00,file="results/ds.00.csv")
 
 #==================================================================
 #This is for the report:
@@ -218,7 +218,7 @@ cl.results.11[1, 6] <- data.quality
 cl.results.11[1, 7] <- summary(unsup.results.11$prediction)[3]
 cl.results.11[1, 8] <- round(summary(unsup.results.11$prediction)[3]/nrow(dupli.ds)*100,2)
 
-write.csv(cl.results.11,file="cl.results.11.csv")
+write.csv(cl.results.11,file="results/cl.results.11.csv")
 
 
 #=====================================================================
@@ -260,7 +260,7 @@ cl.results.33[1, 7] <- summary(unsup.results.33$prediction)[3]
 cl.results.33[1, 8] <- round(summary(unsup.results.33$prediction)[3]/nrow(dupli.ds)*100,2)
 cl.results.33[1, 9] <- count.train
 
-write.csv(cl.results.33,file="cl.results.33.csv")
+write.csv(cl.results.33,file="results/cl.results.33.csv")
 
 
 #=====================================================================
@@ -304,7 +304,7 @@ cl.results.00[1, 9] <- count.train
 
 ident.pairs.00 <- getPairs(results.00,show="links")
 
-write.csv(cl.results.00,file="cl.results.00.csv")
+write.csv(cl.results.00,file="results/cl.results.00.csv")
 #============================================================================================
 #============================================================================================
 
@@ -351,4 +351,4 @@ cl.results.22[1, 9] <- count.train
 
 
 #results.all.exp <- runAllExpTrainedClassifier()
-#write.csv(results.all.exp, file="results.all.exp.csv")
+#write.csv(results.all.exp, file="results/results.all.exp.csv")
