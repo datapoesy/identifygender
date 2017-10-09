@@ -34,7 +34,7 @@ dbWriteTable(con, "cartable",
              value = df, append = TRUE, row.names = FALSE)
 
 # query the data from postgreSQL 
-df_postgres <- dbGetQuery(con, "SELECT * from cartable")
+df_postgres <- dbGetQuery(con, "SELECT * from userdetails")
 
 # compares the two data.frames
 identical(df, df_postgres)

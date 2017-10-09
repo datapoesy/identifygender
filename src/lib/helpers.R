@@ -204,15 +204,15 @@ clonePerson = function(.df, p){
   .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
   
   #remove the used rows to avoid repeated selection
-  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  .df <- .df[ !(.df$recoid %in% .temp$recoid), ]
   
   for(i in 1:nrow(.temp)){
     ## Take values from .temp dataframe
     firstRow =  .temp[i,]
     firstRow$firstname <- gsub('(a|e|i|o|u){1,}$','',.temp[i,c("firstname")]) # Remove trailing vowel sounds
-    firstRow$addr.1 <- gsub('(A|E|I|O|U){1,}','',.temp[i,c("addr.1")])# Remove beginning vowels
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    firstRow$addr1 <- gsub('(A|E|I|O|U){1,}','',.temp[i,c("addr1")])# Remove beginning vowels
+    firstRow$someid  <- as.character(paste( sample( 1:9, 18, replace=TRUE ), collapse="" )) # creating a new cust id
+    firstRow$recoid <- paste(.temp$recoid[i],"D")
     .rs[i,]<- firstRow
   }
   .result <- rbind(.result,.rs)
@@ -220,15 +220,15 @@ clonePerson = function(.df, p){
   .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
   
   #remove the used rows to avoid repeated selection
-  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  .df <- .df[ !(.df$recoid %in% .temp$recoid), ]
   
   for(i in 1:nrow(.temp)){
     ## Take values from .temp dataframe
     firstRow =  .temp[i,]
     firstRow$lastname <- gsub('(a|e|i|o|u){1,}$','',.temp[i,c("lastname")]) # Remove trailing vowel sounds
     firstRow$gender <- ''# Remove gender Name
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    firstRow$someid  <- as.character(paste( sample( 1:9, 18, replace=TRUE ), collapse="" )) # creating a new cust id & convert to string
+    firstRow$recoid <- paste(.temp$recoid[i],"D")
     .rs[i,]<- firstRow
   }
   .result <- rbind(.result,.rs)
@@ -236,15 +236,15 @@ clonePerson = function(.df, p){
   .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
   
   #remove the used rows to avoid repeated selection
-  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  .df <- .df[ !(.df$recoid %in% .temp$recoid), ]
   
   for(i in 1:nrow(.temp)){
     ## Take values from .temp dataframe
     firstRow =  .temp[i,]
     firstRow$lastname <- gsub('(t|e|i|o|z){1,}$','',.temp[i,c("lastname")]) # Remove trailing vowel sounds
     firstRow$county <- ''# Remove county
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    firstRow$someid  <- as.character(paste( sample( 1:9, 18, replace=TRUE ), collapse="" )) # creating a new cust id & convert to string
+    firstRow$recoid <- paste(.temp$recoid[i],"D")
     .rs[i,]<- firstRow
   }
   .result <- rbind(.result,.rs)
@@ -253,15 +253,15 @@ clonePerson = function(.df, p){
   .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
   
   #remove the used rows to avoid repeated selection
-  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  .df <- .df[ !(.df$recoid %in% .temp$recoid), ]
   
   for(i in 1:nrow(.temp)){
     ## Take values from .temp dataframe
     firstRow =  .temp[i,]
     firstRow$lastname <- gsub('(l|n|i){1,}$','',.temp[i,c("lastname")]) # Remove trailing vowel sounds
     firstRow$postcode <- '' # Remove postcode
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    firstRow$someid  <- as.character(paste( sample( 1:9, 18, replace=TRUE ), collapse="" )) # creating a new cust id & convert to string
+    firstRow$recoid <- paste(.temp$recoid[i],"D")
     .rs[i,]<- firstRow
   }
   .result <- rbind(.result,.rs)
@@ -269,16 +269,16 @@ clonePerson = function(.df, p){
   .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
   
   #remove the used rows to avoid repeated selection
-  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  .df <- .df[ !(.df$recoid %in% .temp$recoid), ]
   
   for(i in 1:nrow(.temp)){
     ## Take values from .temp dataframe
     firstRow =  .temp[i,]
     firstRow$postcode <- '' # Remove postcode
     firstRow$nis <- ''
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$someid  <- as.character(paste( sample( 1:9, 18, replace=TRUE ), collapse="" )) # creating a new cust id & convert to string
     
-    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    firstRow$recoid <- paste(.temp$recoid[i],"D")
     .rs[i,]<- firstRow
   }
   .result <- rbind(.result,.rs)
@@ -286,7 +286,7 @@ clonePerson = function(.df, p){
   .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
   
   #remove the used rows to avoid repeated selection
-  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  .df <- .df[ !(.df$recoid %in% .temp$recoid), ]
   
   for(i in 1:nrow(.temp)){
     ## Take values from .temp dataframe
@@ -295,8 +295,8 @@ clonePerson = function(.df, p){
     firstRow$b.year <- '' # Remove birth year
     firstRow$b.month <- '' # Remove birth month
     firstRow$b.day <- '' # Remove birth day
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
-    firstRow$record.id <- paste(.temp$record.id[i],"D")
+    firstRow$someid  <- as.character(paste( sample( 1:9, 18, replace=TRUE ), collapse="" )) # creating a new cust id & convert to string
+    firstRow$recoid <- paste(.temp$recoid[i],"D")
     .rs[i,]<- firstRow
   }
   .result <- rbind(.result,.rs)
@@ -314,18 +314,18 @@ createTwins = function(.df, p, .used.ids){
   .temp <- (.df[sample(x=nrow(.df),size=p*nrow(.df)/100, replace = FALSE),]) # Percentage of rows
   .result <- data.frame(matrix(0, ncol = ncol(.df), nrow = 0))
   colnames(.result) <- colnames(.df)
-  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  .df <- .df[ !(.df$recoid %in% .temp$recoid), ]
  
   for(i in 1:nrow(.temp)){
     firstRow =  .temp[i,]
  
     firstRow$firstname <- .df$firstname[sample(nrow(.df),1)] # Take a random name from the firstname column
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$someid  <- as.character(paste( sample( 1:9, 18, replace=TRUE ), collapse="" )) # creating a new cust id & convert to string
     firstRow$email <- r_email_addresses(1)
-    firstRow$m.nmbr <- r_phone_numbers(1)
+    firstRow$mnumber <- r_phone_numbers(1)
     nis.number <- paste( sample( 1:9, 7, replace=TRUE ), collapse="" )
     firstRow$nis <-  gsub("[[:space:]]", "", paste("NN",nis.number))# AA8371307
-    firstRow$record.id <- paste(.temp$record.id[i],"T")
+    firstRow$recoid <- paste(.temp$recoid[i],"T")
     .result[i,]<- firstRow
     
   }
@@ -344,19 +344,19 @@ createCouples = function(.df, p){
   .result <- data.frame(matrix(0, ncol = ncol(.df), nrow = 0))
   
   colnames(.result) <- colnames(.df)
-  .df <- .df[ !(.df$record.id %in% .temp$record.id), ]
+  .df <- .df[ !(.df$recoid %in% .temp$recoid), ]
   
   for(i in 1:nrow(.temp)){
     firstRow =  .temp[i,]
     firstRow$firstname <- .df$firstname[sample(nrow(.df),1)] # Take a random name from the firstname column
-    firstRow$some.id  <- paste( sample( 1:9, 18, replace=TRUE ), collapse="" ) # creating a new cust id
+    firstRow$someid  <- as.character(paste( sample( 1:9, 18, replace=TRUE ), collapse="" )) # creating a new cust id & convert to string
     firstRow$gender <- if(firstRow$gender=="male") "female" else "male"
     firstRow$b.month <- .df$b.month[sample(nrow(.df),1)] # Take a random month of birth
     firstRow$b.day <- .df$b.day[sample(nrow(.df),1)] # Take a random month of birth
     firstRow$b.year <- .df$b.year[sample(nrow(.df),1)] # Take a random month of birth
-    firstRow$m.nmbr <- r_phone_numbers(1)
+    firstRow$mnumber <- r_phone_numbers(1)
     firstRow$email <- r_email_addresses(1)
-    firstRow$record.id <- paste(.temp$record.id[i],"C")
+    firstRow$recoid <- paste(.temp$recoid[i],"C")
     .result[i,]<- firstRow
   }
  
@@ -366,10 +366,14 @@ createCouples = function(.df, p){
 
 
 makeTypos = function(.df,old,new,p){
+  
+  test <- .df$recoid[sample(nrow(.df)*p/100)]
 
-  for(i in 1: nrow(.df)*p/100){
-    test <- .df[sample(nrow(.df),1),]
-  .df[.df$record.id==test$record.id,] <- str_replace_all(test,old,new)
+  for(i in 1: length(test)){
+   
+  .df[.df$recoid==test[i],] <- str_replace_all(.df[.df$recoid==test[i],],old,new)
+  print(.df[.df$recoid==test[i],])
+ 
  }
 return(.df)
   
@@ -379,7 +383,7 @@ return(.df)
 #
 #
 ## This script file iterates from the already created datasets
-## "record.id","some.id", "birth.date","m.nmbr","h.nmbr"
+## "recoid","someid", "birth.date","mnumber","hnumber"
 
 # Function to iterate all experiments for Unsupervised classification      
 runAllExpUnsupervised <- function( ){ # for supervised training
@@ -506,7 +510,7 @@ runAllExpTrainedClassifier <- function(){ # for supervised training
       data.quality <- rds.pairs.tracker[rds.pairs.tracker[, "Iteration.No"]==j & rds.pairs.tracker[, "Quality.Rating"]==.q.rating,]$Quality.Perc
       
       current.rpairs <- compare.dedup(current.rpairs,blockfld = list(4,c(16,17,18)),phonetic = c(3,4),
-                                      exclude = c("record.id","some.id", "birth.date"), n_match = 4000)
+                                      exclude = c("recoid","someid", "birth.date"), n_match = 4000)
       
       
       

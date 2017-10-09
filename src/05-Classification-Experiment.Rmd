@@ -23,7 +23,7 @@ quality rating is 76%
 * This is labeled to show whether a pair is a match in terms of records.  The is_match column against a record pair clerically confirms a pair match.
 * The training set used for these experiments is prepared from a base data set of 20,000 records and has labeled record of 503 pairs.
 
-<span><center> !["Sample Training Set"](sample-training-set.png){width=100% }</center>
+<span><center> !["Sample Training Set"](image/sample-training-set.png){width=100% }</center>
 <h4><center>Figure.4.1 Sample Training Set</center></h4> </span>
  
 

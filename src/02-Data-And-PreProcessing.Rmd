@@ -31,7 +31,7 @@ To conduct the base experiment, `r ds.count ` records are randomly sampled from 
 <span>
 
 <center>
-!["Data Generation Process"](data-generation.png){width=120% }</center>
+!["Data Generation Process"](image/data-generation.png){width=120% }</center>
 <h4><center>Figure.2.1 Data Generation Process</center></h4>
 </span>
 

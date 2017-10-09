@@ -18,7 +18,7 @@ The other approaches using unsupervised classification is not seen to be effecti
 
 The solution is current built in R. R, being an in-memory statistical engine, scalability of this solution to massive real-world datasets requires to be validated.  However, R provides mechanisms to connect to many popular open source DBs to handle BigData analytics.  This needs to be explored further.  
 
-The solution can be further validated using different real-life scenarios before implementation.   
+The framework is scalable to validate any of the real-life scenarios typical of any data environment.  The solution would need to be experimented and validated using different real-life scenarios in the data before implementation.   
 
 ##Questions & Answers
 
@@ -28,7 +28,7 @@ This is to ensure that we have control over the "debasement" process.  This way,
 ###Is it possible to use R to manage real-world data and deduplication?
 R is an in-memory statistical engine and has limitations with large datasets.  However, R can connect with popular BigData databases to manage huge datasets.  This is not a popular approach, though.
 
-###Does accuracy improve with increased Training Data
+###Does accuracy improve with increase in Training Data?
 Accuracy is dependent on the training set for the number of unique scenarios.  In case additional error scenarios creep into the dataset, the training set would need to be enhanced.  However, this experiment uses only a fixed number of training set and has been showing consistent performance.
 
 ###Will this solution work for languages other than English?

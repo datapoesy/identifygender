@@ -1,5 +1,5 @@
 ---
-title: "04-Unsupervised Classifications"
+title: "04-Unsupervised Classification"
 output:
   pdf_document: default
   html_document: default
@@ -8,24 +8,11 @@ output:
 
 #Unsupervised Machine Learning:
 
-Potential matching pairs are identified based on weights.  Each record in a comparative pair gets a weight based on its proximity to its twin, in turn based on the similarity of values in their variables.  Values above a certain threshold is considered to be an identical pair.  The following is an output of the weighing process:
+In unsupervised machine learning, potential matching pairs are identified based on weights.  Each record in a comparative pair gets a weight based on its proximity to its twin, in turn based on the similarity of values in their variables.  Values above a certain threshold is considered to be an identical pair.  
+
+Since supervised classification depends purely on the values falling between a set of threshold values, exceptionally certain pairs tend to slip through as duplicates even while being unique records. People living at the same address, with the same last name are typical cases in point.  While their similarity score remain exceptionally high, they are not duplicate records and should be treated as exceptions. For this reason, unsupervised classification tends to come up with a high number of "false" positives. This method is included here for completeness of the experimental framework; but not detailed.  
 
 The weight distribution shows the number of records within the given range.  For instance, there are 45029 records within the weight range of [0.05,0.1]
-
-##Assigning Weights for classification
-
-
-Identification of matching using weights is based on computing weight thresholds.  Most commonly, this is achieved manually.  The following is the output of the classification by weight thresholds:
-
-***
-
-```{r chapter 4-1, echo=FALSE, message=FALSE, warning=FALSE}
-#result <- epiClassify(rpairs.00, 0.85,0.40)
-suppressPackageStartupMessages(library(pander))
-panderOptions("table.split.table", Inf)  ## don't split tables
-pander(summary(results.11)[1:2])
-
-```
 
 
 The difference between the duplicates created and the identified linkages denotes the error from the deduplication process.

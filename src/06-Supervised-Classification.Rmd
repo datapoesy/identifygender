@@ -6,7 +6,7 @@ output:
 ---
 
 
-#Supervised Classification with larger datasets
+#Supervised Classification with large datasets
 
 This chapter details results from multiple iterations of the dataset with varied record counts and quality.  
 
@@ -16,7 +16,7 @@ This chapter details results from multiple iterations of the dataset with varied
 The table reports the accuracy of the deduplication engine.  Note that the quality of data is proportional to the Total records.  This is due to the addition of duplicate and non-duplicate records to the base dataset.
 
 ```{r chapter 6-1, echo=FALSE, message=FALSE, warning=FALSE}
-results.all.exp <- read.csv(file="results.all.exp.csv")
+results.all.exp <- read.csv(file="results/results.all.exp.csv")
 results.all.exp <- results.all.exp[,-c(1)]
 results.iter1 <- results.all.exp[c(1:5),]
 colnames(results.iter1) <- c("No.","Total\n.Records","Duplicates","Non\n.Duplicates","Record\n.Pairs","Quality\n.Perc","Ident\n.Pairs","Accuracy","Error")

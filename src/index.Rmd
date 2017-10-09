@@ -1,8 +1,9 @@
 --- 
 title: |
-     | A Controlled Experiment in Deduplication
-     | Employing 
+     | Deduplication Solution
+     | employing 
      | Machine Learning
+subtitle: (A Controlled Experiment)
 author: "Sreekumar Pillai"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -30,5 +31,5 @@ This research attempts to solve the problem with simulated data.  The experiment
 
 Challenges exist while simulating real-world problems in a generated dataset, however, more importantly, this provides better control over the input and output to the experiment, to verify the solution and its efficiency.  
 
-This controlled experiment process attempts Unsupervised Classification, Classification with weight thresholds and Supervised Classification using manually created training sets.  As the outcome, this experiment reports 99% accuracy, consistently, in deduplication by employing Supervised Classification using manually trained classifiers.
+This controlled experiment process attempts Unsupervised Classification, Classification with weight thresholds and Supervised Classification using manually created training sets.  As the outcome, this experiment reports 99.8% accuracy, consistently, in deduplication by employing Supervised Classification using manually trained classifiers.
 
