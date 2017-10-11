@@ -11,7 +11,8 @@ source("lib/helpers.R")
 
 
 
-#options(fftempdir = "D:/Assembla/deduplication/src/data/temp")
+options(fftempdir = "D:/Assembla/deduplication/src/data/temp")
+
 
 #hhp <- read.table.ffdf(file="data/ds.00.csv",quote = "", FUN = "read.csv", na.strings = "",sep=",", colClasses=xclass) 
 
@@ -26,9 +27,9 @@ xclass <- c("factor","factor","factor","factor","factor",
 
 #base.ds <- read.csv(file="data/ds.00.csv", colClasses = xclass,  stringsAsFactors = FALSE) # read from csv
 
-it.count <- c(20,40,80,100)
+it.count <- c(20,40,60,80,100,120)
 
-i <- 1
+i <- 5
 
 
   ## Set the count of records in the dataset
@@ -54,19 +55,24 @@ i <- 1
  
   rds.dest.file <- str_c("ff-based/rpairs.00-",it.count[i],"k.rds")
   
-  saveRDS(rpairs.00,file=rds.dest.file)
+ 
+  save.ffdf(rpairs.00, dir=str_c("ff-based/ffdb-",it.count[i],"k.rds"),overwrite=TRUE)
+  
+  rpairs.00 <- load.ffdf(dir=str_c("ff-based/ffdb-",it.count[i],"k.rds"))
   
   ds.rds.data[i,1] <- i
   ds.rds.data[i,2] <- ds.count
   ds.rds.data[i,3] <- rds.dest.file
   ds.rds.data[i,4] <- Sys.time() - depup.st.time  # current time - start time
   
-
+  #rpairs.00 <- readRDS(file=str_c("ff-based/rpairs.00-",it.count[i],"k.rds"))
+  
+  write.csv(ds.rds.data,file="ff-based/dataset-info.csv")
 #=============================================================================================
 #Prepare Training Set -  Will not create if the training set exists
 #=============================================================================================
 
-destfile="ff-based/minTrain-usertrained-20k.rds"
+destfile="ff-based/minTrain-usertrained-80k.rds"
   
   minTrain.00 <- NULL
 
@@ -118,7 +124,7 @@ if(file.exists(destfile)){
 #===================================================================================================
 
 count.train <- nrow(minTrain.00$pairs)  
-rpairs.00 <- epiWeights(rpairs.00, e=0.01, f =getFrequencies(rpairs.00))
+  rpairs.00 <- epiWeights(rpairs.00, e=0.01, f =getFrequencies(rpairs.00))
 model.00 <- trainSupv(minTrain.00, method = "rpart",minsplit=1) # Training method is passed as argument
 results.00 <- classifySupv(model.00, newdata = rpairs.00)
 fr <- summary(results.00)
@@ -130,7 +136,7 @@ fr <- summary(results.00)
 
 #colnames(cl.results.00) <- c("No.","Total.Records","Record.Pairs","Ident.Pairs","Real.Pairs","Quality.Perc","Train.Count","Error")
 
-cl.results.00[i, 1] <- 1
+cl.results.00[i, 1] <- i
 cl.results.00[i, 2] <- ds.count
 cl.results.00[i, 3] <- fr$nPairs
 cl.results.00[i, 4] <- fr$nLinks
